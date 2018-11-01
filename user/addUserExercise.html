@@ -24,7 +24,19 @@ body {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  font-size: 17px;
+  
+
+  @media screen and (min-width: 601px) {
+    div.example {
+      font-size: 80px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    div.example {
+      font-size: 30px;
+    }
+  }
 }
 
 .topnav a:hover {
@@ -40,6 +52,9 @@ body {
 .topnav-right {
   float: right;
 }
+
+
+
 </style>
 
 
