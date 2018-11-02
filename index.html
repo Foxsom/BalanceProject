@@ -3,6 +3,7 @@
 <title>Balance Project Login</title>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body {font-family: Arial, Helvetica, sans-serif;}
 
@@ -128,20 +129,41 @@ span.psw {
 </head>
 <body>
 <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+<script src="functions.js"></script>
+<script>
 
+
+
+var database;
+var userdbRef;
+var uploadRef;
+var uploadCount;
+var uid;
+initialize();
+getRefs();
+
+firebase.auth().signOut()
+ .catch(function (err) {
+   // Handle errors
+ });
+
+
+  
+</script>
 
 <div id="id01" class="modal">
   
-  <form class="modal-content animate" action="user/userHome.html">
+  <form class="modal-content animate">
 
     <div class="container">
       <label for="uname"><b>Email</b></label>
-      <input type="text" placeholder="Enter Email" name="uname" required>
+
+      <input id= "email" type="text" placeholder="Enter Email" name="uname" required>
 
       <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" required>
+      <input id= "pass" type="password" placeholder="Enter Password" name="psw" required>
         
-      <button type="submit" onclick="login()">Login</button>
+      <button type="button" onclick="login()">Login</button>
       <label>
         <input type="checkbox" checked="checked" name="remember"> Remember me
       </label>
@@ -154,7 +176,55 @@ span.psw {
 </div>
 
 <script>
-function login
+function login(){
+    var uid;
+    var email=document.getElementById("email").value;
+    var password=document.getElementById("pass").value;
+
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+  .then(function() {
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  })
+  .catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    console.log(errorCode);
+    if(errorCode=="auth/invalid-email"){
+        
+    }
+  });
+
+    firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+    var displayName = user.displayName;
+    var email = user.email;
+    var emailVerified = user.emailVerified;
+    var photoURL = user.photoURL;
+    var isAnonymous = user.isAnonymous;
+    uid = user.uid;
+    var providerData = user.providerData;
+    console.log(uid);
+    var physRef = database.ref('/'+ uid +'/isPhysician');
+    physRef.once('value').then(function(snapshot){
+            var isPhysician = snapshot.val();
+            if(isPhysician==true){
+                window.open("physician/physicianHome.html", "_self");
+            }
+            else if(isPhysician==false){
+                window.open("user/userHome.html", "_self");
+            }
+            
+        });
+  }
+    else {
+    // User is signed out.
+    // ...
+  }
+});
+
+}
 
 </script>
 
