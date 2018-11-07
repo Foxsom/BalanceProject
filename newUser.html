@@ -195,7 +195,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 </div>
 
 <script>
-  //getPhysicians();
+  populateDropdown();
 
   function createUserAccount(){
     firebase.auth().signOut();
@@ -234,7 +234,26 @@ firebase.auth().onAuthStateChanged(function(user) {
 
   }
 
+  function populateDropdown(){
+    var promises = [];
+    var dropdown = document.getElementById('clinician');
 
+    database.ref('physicians').once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        var childKey = childSnapshot.key;
+        var childValue = childSnapshot.val();
+        var option = document.createElement("option");
+        option.text = childSnapshot.key;
+        option.value = childSnapshot.value;
+        
+
+        promises.push(dropdown.add(option));
+        
+      });
+      return Promise.all(promises);
+    });
+    
+  }
 </script>
 
 </body>
