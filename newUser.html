@@ -206,7 +206,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     var firstName = document.getElementById("firstName").value;
     var lastName = document.getElementById("lastName").value;
     var tel = document.getElementById("phoneNumber").value;
-    var clinicianUid = "dr8uf3XC32URAgtttQ7ag7mM1zq1";
+    var clinicianUid = document.getElementById("clinician").value;
 
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
         // Handle Errors here.

@@ -249,7 +249,7 @@ function createClinicianAccount(){
       tel: tel,
       clients : 0
     });
-    database.ref("physicians").set({[lastName +", " +firstName] : user.uid});
+    database.ref("physicians").child(lastName+", " +firstName).set(user.uid);
     // ...
   } 
     });
