@@ -218,6 +218,10 @@ firebase.auth().onAuthStateChanged(function(user) {
     
     firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
+    var promises = [];
+    if(true){
+
+    }
     database.ref(user.uid).set({
       isPhysician: false,
       firstName: firstName,
@@ -244,7 +248,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         var childValue = childSnapshot.val();
         var option = document.createElement("option");
         option.text = childSnapshot.key;
-        option.value = childSnapshot.value;
+        option.value = childSnapshot.val();
         
 
         promises.push(dropdown.add(option));
