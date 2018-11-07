@@ -8,7 +8,8 @@
 body {font-family: Arial, Helvetica, sans-serif;}
 
 /* Full-width input fields */
-input[type=email], input[type=password] {
+input[type=email], input[type=password],input[type=text],
+input[type=tel]  {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -28,48 +29,18 @@ input[type=email], input[type=password] {
     width: 100%;
 }
 
-#newUser{
-    background-color: #FE9A2E;
-    color: white;
+#clinician{
     padding: 14px 20px;
     margin: 8px 0;
-    border: none;
     cursor: pointer;
-    width: 49%;
-}
-
-#newClinician{
-    background-color: #FE9A2E;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 49%;
+    width: 100%;
 }
 
 button:hover {
     opacity: 0.8;
 }
 
-/* Extra styles for the cancel button */
-.cancelbtn {
-    width: auto;
-    padding: 10px 18px;
-    background-color: #f44336;
-}
 
-/* Center the image and position the close button */
-.imgcontainer {
-    text-align: center;
-    margin: 24px 0 12px 0;
-    position: relative;
-}
-
-img.avatar {
-    width: 40%;
-    border-radius: 50%;
-}
 
 .container {
     padding: 16px;
@@ -120,20 +91,7 @@ span.psw {
 }
 
 /* Add Zoom Animation */
-.animate {
-    -webkit-animation: animatezoom 0.6s;
-    animation: animatezoom 0.6s
-}
 
-@-webkit-keyframes animatezoom {
-    from {-webkit-transform: scale(0)} 
-    to {-webkit-transform: scale(1)}
-}
-    
-@keyframes animatezoom {
-    from {transform: scale(0)} 
-    to {transform: scale(1)}
-}
 
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
@@ -186,8 +144,7 @@ firebase.auth().onAuthStateChanged(function(user) {
         });
   }
     else {
-    // User is signed out.
-    // ...
+    var physicians = getPhysicians();
   }
 });
 
@@ -200,36 +157,48 @@ firebase.auth().onAuthStateChanged(function(user) {
   
   <form class="modal-content animate">
 
-    <div class="container">
-      <label for="uname"><b>Email</b></label>
+    <div id = "loginInfo">
 
-      <input id= "email" type="email" placeholder="Enter Email" name="uname" required>
+    <div class = "container">
+      <h2 align = "center">Create User Account</h2>
+      <label for = "email"><b>Email:</b></label>
+      <input id = "email" type = "email" placeholder="Enter Email" name = "email" required>
 
-      <label for="psw"><b>Password</b></label>
+      <label for = "confirmEmail"><b>Confirm Email:</b></label>
+      <input id = "email" type = "email" placeholder="Enter Email" name = "confirmEmail" required>
+      <br>
+      <label for="psw"><b>Password:</b></label>
       <input id= "pass" type="password" placeholder="Enter Password" name="psw" required>
+
+      <label for="confirmPsw"><b>Confirm Password:</b></label>
+      <input id= "confirmPass" type="password" placeholder="Enter Password" name="confirmPsw" required>
+      <br>
+
+      <label for="firstName"><b>First Name:</b></label>
+      <input id= "firstName" type="text" placeholder="Enter First Name" name="firstName" 
+      required>
+      <label for="lastName"><b>Last Name:</b></label>
+      <input id= "lastName" type="text" placeholder="Enter Last Name" name="lastName" 
+      required>
+      <br>
+      <label for="phoneNumber"><b>Phone Number:</b></label>
+      <input id= "phoneNumber" type="tel" placeholder="Phone Number" name="phoneNumber" 
+      required>
+      <label for="clinician"><b>Clinician:</b></label>
+      <select id = "clinician" placeholder = "Select Physician Name" name = "clinician" required>
+        <option value = "noneSelected">Select Physician</option>
         
-      <button id = myBtn type="button" onclick="login()">Login</button>
-        
-        <button id = "newUser" type="button" name="newUser" onclick = "openUserCreate()" >New User</button>
-
-        <button  id = "newClinician" type="button" style = "float: right;" name="newClinician" onclick = "openClinicianCreate()" >New Clinician</button>
-
-      	<span class="psw" >Forgot <a href="#">password?</a> </span>
-
+      </select>
       
 
-    
-  </form>
+
+      <button id = "myBtn" type="button">Create Account </button>
+    </div>
+  </div>
 </div>
 
 <script>
-function openClinicianCreate(){
-    window.open("newClinician.html", "_self");
-}
-function openUserCreate(){
-    window.open("newUser.html", "_self");
-}
-
+clinician.options.add(new Option(physicians[0],physicians[0],0));
 function login(){
     var uid;
     var email=document.getElementById("email").value;
@@ -279,7 +248,6 @@ function login(){
 });
 
 }
-
 var input = document.getElementById("pass");
 input.addEventListener("keyup", function(event) {
     event.preventDefault();
@@ -287,6 +255,7 @@ input.addEventListener("keyup", function(event) {
         document.getElementById("myBtn").click();
     }
 });
+
 
 </script>
 

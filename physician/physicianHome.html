@@ -4,7 +4,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-
+<script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+<script src="../functions.js"></script>
+<script>
+  var database;
+  initialize();
+  getRefs();
+  var user = getUser();
+</script>
 
 
 <style>
@@ -63,52 +70,28 @@ body {
 
 
 <body>
-<script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
-<script src="./functions.js"></script>
+
+
+
+
+<script>
+  
+</script>
+
 <div class="topnav" id = "navbar">
-	<a class ="active" href="userHome.html" >Home</a>
-	<a  href="addUserExercise.html" >Add an Exercise</a>
-	<a  href="previousUserExercises.html" >Previous Exercises</a>
+	<a class ="active" href="physicianHome.html" >Home</a>
+	<a  href="addClient.html" >Add a Client</a>
+	<a  href="currentClients.html" >Current Clients</a>
 
 	<div class="topnav-right">
-		<a href='../index.html' >Logout</a>
+		<a href='../index.html' onclick="signOut()" >Logout</a>
 	</div>
 </div>
 
 <section id=topsection>
-  <button type = "button" onclick = "makeAccount()">Make test account</button>
 	</section>
 
-<script>
-  var exerciseNames = ["Exercise1", "Exercise2", "Exercise3", "Exercise4", "Exercise5", "Exercise6"];
-  var exercisenums = [];
 
-  var uploadCount;
-  var email;
-  var username = "Smith, John";
-  var password;
-  var physician = "Lazaro";
-  var database;
-  var userdbRef;
-  var uploadRef;
-  var valueArray = [];
-  var tableHeaderMade = false;
-
-  initialize();
-  getRefs();
-
-
-
-
-  function makeAccount(){
-    firebase.auth().createUserWithEmailAndPassword("test@email.com", "password").catch(function(error) {
-  // Handle Errors here.
-  var errorCode = error.code;
-  var errorMessage = error.message;
-  // ...
-});
-  }
-</script>
 
 
 </body>
