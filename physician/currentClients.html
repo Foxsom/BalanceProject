@@ -101,12 +101,83 @@ tr:hover {background-color: #f5f5f5;}
 </div>
 
 <section id=topsection >
-    <table id = "Exercises" style= "width=100%" >
+    <table id = "Clients" style= "width=100%" >
       
     </table>
 	</section>
 
 
+<script>
+  var titles = ["Name", "Email", "Phone Number"];
+  displayTitles(titles);
+  function displayTitles(titles){
+    var table = document.getElementById("Clients");
+    var titleRow = table.insertRow(0);
+    for (var i = 0; i<titles.length; i++){
+      var cell = titleRow.insertCell(i);
+      cell.innerHTML = titles[i];
+    }
+    displayClientNames();
+
+  }
+
+  function displayClientNames() {
+    firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    var rowIndex = 1;
+    var promises = [];
+
+    var table = document.getElementById("Clients");
+    database.ref(user.uid+"/clients").once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        var childKey = childSnapshot.key;
+        var childValue = childSnapshot.val();
+        var row = table.insertRow(rowIndex);
+        rowIndex++;
+        var cell = row.insertCell(0);
+        var emailCell = row.insertCell(1);
+        var telCell = row.insertCell(2);
+        
+
+        console.log(childKey, childValue);
+
+        promises.push(cell.innerHTML = childKey);
+        displayUserInfo(childValue, rowIndex, emailCell, telCell);
+        
+      });
+      return Promise.all(promises);
+    });
+    }
+
+    });
+  }
+
+  function displayUserInfo(uid, row, emailCell, telCell){
+    var table = document.getElementById("Clients");
+    var row = table.insertRow(row);
+    var userRef = database.ref(uid);
+    
+    userRef.once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        var childKey = childSnapshot.key;
+        var childValue = childSnapshot.val();
+        switch(childKey){
+          case "email": 
+            emailCell.innerHTML = childValue;
+          break;
+          case "tel":
+            telCell.innerHTML = childValue;
+        }
+      });
+    });
+
+
+
+    
+
+    
+  }
+</script>
 
 
 </body>

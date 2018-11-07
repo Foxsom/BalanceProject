@@ -246,6 +246,7 @@ function createClinicianAccount(){
   if (user) {
     database.ref(user.uid).set({
       isPhysician: true,
+      email: email,
       firstName: firstName,
       lastName: lastName,
       tel: tel,

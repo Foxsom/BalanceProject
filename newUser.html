@@ -229,6 +229,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     }
     database.ref(user.uid).set({
+      email: email,
       isPhysician: false,
       firstName: firstName,
       lastName: lastName,
