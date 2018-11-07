@@ -189,13 +189,19 @@ firebase.auth().onAuthStateChanged(function(user) {
       
 
 
-      <button id = "myBtn" onclick = "createUserAccount()" type="button">Create Account </button>
+      <button id = "myBtn" onclick = "buttonClicked()" type="button">Create Account </button>
     </div>
   </div>
 </div>
 
 <script>
   populateDropdown();
+
+  function buttonClicked(){
+    if(checkInputs()){
+      createUserAccount();
+    }
+  }
 
   function createUserAccount(){
     firebase.auth().signOut();
@@ -257,6 +263,44 @@ firebase.auth().onAuthStateChanged(function(user) {
       return Promise.all(promises);
     });
     
+  }
+
+  function checkInputs(){
+    var email = document.getElementById("email").value;
+    var confirmEmail = document.getElementById("confirmEmail").value;
+    var password = document.getElementById("psw").value;
+    var confirmPassword = document.getElementById("confirmPsw").value;
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value;
+    var tel = document.getElementById("phoneNumber").value;
+    var clinicianUid = document.getElementById("clinician").value;
+
+    if (email.equals(confirmEmail)){
+      if(password.equals(confirmPassword)){
+        if(!(firstName.equals(''))&&!(lastName.equals(''))){
+          if((tel.length()==10)||(tel.length()==9)){
+            return true;
+          }
+          else{
+            //tel invalid
+            console.log("Invalid tel");
+          }
+        }
+        else{
+          //first or last name missing
+          console.log("Missing name");
+        }
+      }
+      else{
+        //password mismatch
+        console.log("Password mismatch");
+      }
+    }
+    else{
+      //email Mismatch
+      console.log("Email mismatch");
+    }
+    return false;
   }
 </script>
 
