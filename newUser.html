@@ -275,16 +275,17 @@ firebase.auth().onAuthStateChanged(function(user) {
     var tel = document.getElementById("phoneNumber").value;
     var clinicianUid = document.getElementById("clinician").value;
 
-    if (email.equals(confirmEmail)){
-      if(password.equals(confirmPassword)){
-        if(!(firstName.equals(''))&&!(lastName.equals(''))){
-          if((tel.length()==10)||(tel.length()==9)){
+    if (email===confirmEmail){
+      if(password===confirmPassword){
+        if(!(firstName==='')||!(lastName==='')){
+          /*if((tel.length()==10)||(tel.length()==9)){
             return true;
           }
           else{
             //tel invalid
             console.log("Invalid tel");
-          }
+          }*/
+          return true;
         }
         else{
           //first or last name missing
