@@ -45,8 +45,10 @@
     return user.uid;
     // ...
   } else {
+
     window.open("../index.html", "_self");
   }
+
 });
   }
 
@@ -58,42 +60,21 @@
   }
 
   function getPhysicians(){
-    var physicians = [];
-    
-    database.ref("physicians").once('value', function(snapshot) {
-      snapshot.forEach(function(childSnapshot) {
+    var clinicians = document.getElementById("clinician");
+    var userId = firebase.auth().currentUser.uid;
+	 return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+  	var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+  		database.ref("physicians").once('value', function(snapshot) {
+      	snapshot.forEach(function(childSnapshot) {
         var childValue = childSnapshot.value;
         var childKey = childSnapshot.key;
-        physicians.push(childValue);
-
+        clinicians.options.add(new Option("0", "0", 0));
       });
     });
-    return physicians;
-  }
-
-  function createUserAccount(emailAddress, password, firstName, lastName, phoneNumber, level){
-    var config = {apiKey: "AIzaSyCRCQuWxeEUFXN6E_4Z7MDK2eTSjeVN3kQ",
-    authDomain: "balanceproject-e98c1.firebaseapp.com",
-    databaseURL: "https://balanceproject-e98c1.firebaseio.com"};
-    var secondaryApp = firebase.initializeApp(config, "Secondary");
-    var userUID;
-    secondaryApp.auth().createUserWithEmailAndPassword("test@email.com", "password").then(function(newUser) {
-    secondaryApp.auth().onAuthStateChanged(function(newUser) {
-  if (user) {
-    database.ref(newUser.uid).set({isPhysician:false});
+	});
     
-    // ...
-  } 
-    });
-    //I don't know if the next statement is necessary 
-    secondaryApp.auth().signOut();
-
-    physicianUID = getUser();
-    console.log(physicianUID);
-
-    return userUID;
-});
-
   }
+
+
 
   

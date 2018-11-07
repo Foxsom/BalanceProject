@@ -119,106 +119,7 @@ var uploadCount;
 var uid;
 initialize();
 getRefs();
-
 firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    var displayName = user.displayName;
-    var email = user.email;
-    var emailVerified = user.emailVerified;
-    var photoURL = user.photoURL;
-    var isAnonymous = user.isAnonymous;
-    uid = user.uid;
-    var providerData = user.providerData;
-    console.log(uid);
-    var physRef = database.ref('/'+ uid +'/isPhysician');
-    physRef.once('value').then(function(snapshot){
-            var isPhysician = snapshot.val();
-            if(isPhysician==true){
-                window.open("physician/physicianHome.html", "_self");
-            }
-            else if(isPhysician==false){
-                window.open("user/userHome.html", "_self");
-            }
-            
-        });
-  }
-    else {
-    var physicians = getPhysicians();
-  }
-});
-
-
-
-  
-</script>
-
-<div id="id01" class="modal">
-  
-  <form class="modal-content animate">
-
-    <div id = "loginInfo">
-
-    <div class = "container">
-      <h2 align = "center">Create User Account</h2>
-      <label for = "email"><b>Email:</b></label>
-      <input id = "email" type = "email" placeholder="Enter Email" name = "email" required>
-
-      <label for = "confirmEmail"><b>Confirm Email:</b></label>
-      <input id = "email" type = "email" placeholder="Enter Email" name = "confirmEmail" required>
-      <br>
-      <label for="psw"><b>Password:</b></label>
-      <input id= "pass" type="password" placeholder="Enter Password" name="psw" required>
-
-      <label for="confirmPsw"><b>Confirm Password:</b></label>
-      <input id= "confirmPass" type="password" placeholder="Enter Password" name="confirmPsw" required>
-      <br>
-
-      <label for="firstName"><b>First Name:</b></label>
-      <input id= "firstName" type="text" placeholder="Enter First Name" name="firstName" 
-      required>
-      <label for="lastName"><b>Last Name:</b></label>
-      <input id= "lastName" type="text" placeholder="Enter Last Name" name="lastName" 
-      required>
-      <br>
-      <label for="phoneNumber"><b>Phone Number:</b></label>
-      <input id= "phoneNumber" type="tel" placeholder="Phone Number" name="phoneNumber" 
-      required>
-      <label for="clinician"><b>Clinician:</b></label>
-      <select id = "clinician" placeholder = "Select Physician Name" name = "clinician" required>
-        <option value = "noneSelected">Select Physician</option>
-        
-      </select>
-      
-
-
-      <button id = "myBtn" type="button">Create Account </button>
-    </div>
-  </div>
-</div>
-
-<script>
-clinician.options.add(new Option(physicians[0],physicians[0],0));
-function login(){
-    var uid;
-    var email=document.getElementById("email").value;
-    var password=document.getElementById("pass").value;
-
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-  .then(function() {
-    return firebase.auth().signInWithEmailAndPassword(email, password);
-  })
-  .catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode);
-    if(errorCode=="auth/invalid-email"){
-        
-    }
-  });
-
-    firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
     var displayName = user.displayName;
@@ -246,15 +147,92 @@ function login(){
     // ...
   }
 });
+  
+</script>
 
-}
-var input = document.getElementById("pass");
-input.addEventListener("keyup", function(event) {
-    event.preventDefault();
-    if (event.keyCode === 13) {
-        document.getElementById("myBtn").click();
-    }
-});
+<div id="id01" class="modal">
+  
+  <form class="modal-content animate">
+
+    <div id = "loginInfo">
+
+    <div class = "container">
+      <h2 align = "center">Create User Account</h2>
+      <label for = "email"><b>Email:</b></label>
+      <input id = "email" type = "email" placeholder="Enter Email" name = "email" required>
+
+      <label for = "confirmEmail"><b>Confirm Email:</b></label>
+      <input id = "confirmEmail" type = "email" placeholder="Enter Email" name = "confirmEmail" required>
+      <br>
+      <label for="psw"><b>Password:</b></label>
+      <input id= "psw" type="password" placeholder="Enter Password" name="psw" required>
+
+      <label for="confirmPsw"><b>Confirm Password:</b></label>
+      <input id= "confirmPsw" type="password" placeholder="Enter Password" name="confirmPsw" required>
+      <br>
+
+      <label for="firstName"><b>First Name:</b></label>
+      <input id= "firstName" type="text" placeholder="Enter First Name" name="firstName" 
+      required>
+      <label for="lastName"><b>Last Name:</b></label>
+      <input id= "lastName" type="text" placeholder="Enter Last Name" name="lastName" 
+      required>
+      <br>
+      <label for="phoneNumber"><b>Phone Number:</b></label>
+      <input id= "phoneNumber" type="tel" placeholder="Phone Number" name="phoneNumber" 
+      required>
+      <label for="clinician"><b>Clinician:</b></label>
+      <select id = "clinician" placeholder = "Select Physician Name" name = "clinician" required>
+        <option value = "noneSelected">Select Physician</option>
+        
+      </select>
+      
+
+
+      <button id = "myBtn" onclick = "createUserAccount()" type="button">Create Account </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  //getPhysicians();
+
+  function createUserAccount(){
+    firebase.auth().signOut();
+    var email = document.getElementById("email").value;
+    var confirmEmail = document.getElementById("confirmEmail").value;
+    var password = document.getElementById("psw").value;
+    var confirmPassword = document.getElementById("confirmPsw").value;
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value;
+    var tel = document.getElementById("phoneNumber").value;
+    var clinicianUid = "JylfU2cO09Su2tFC35NhEVQCwW43";
+
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+      });
+
+    
+    firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    database.ref(user.uid).set({
+      isPhysician: false,
+      firstName: firstName,
+      lastName: lastName,
+      tel: tel,
+      clinician : clinicianUid
+    });
+    database.ref(clinicianUid+"/clients").set({[lastName +", " +firstName] : user.uid});
+    
+    // ...
+  } 
+    });
+    
+
+  }
 
 
 </script>

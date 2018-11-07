@@ -196,13 +196,13 @@ firebase.auth().onAuthStateChanged(function(user) {
       <input id = "email" type = "email" placeholder="Enter Email" name = "email" required>
 
       <label for = "confirmEmail"><b>Confirm Email:</b></label>
-      <input id = "email" type = "email" placeholder="Enter Email" name = "confirmEmail" required>
+      <input id = "confirmEmail" type = "email" placeholder="Enter Email" name = "confirmEmail" required>
       <br>
       <label for="psw"><b>Password:</b></label>
-      <input id= "pass" type="password" placeholder="Enter Password" name="psw" required>
+      <input id= "psw" type="password" placeholder="Enter Password" name="psw" required>
 
       <label for="confirmPsw"><b>Confirm Password:</b></label>
-      <input id= "confirmPass" type="password" placeholder="Enter Password" name="confirmPsw" required>
+      <input id= "confirmPsw" type="password" placeholder="Enter Password" name="confirmPsw" required>
       <br>
 
       <label for="firstName"><b>First Name:</b></label>
@@ -216,69 +216,46 @@ firebase.auth().onAuthStateChanged(function(user) {
       <input id= "phoneNumber" type="tel" placeholder="Phone Number" name="phoneNumber" 
       required>
 
-      <button id = "myBtn" type="button">Create Account </button>
+      <button id = "myBtn" onclick = "createClinicianAccount()" type="button">Create Account </button>
     </div>
   </div>
 </div>
 
 <script>
-function login(){
-    var uid;
-    var email=document.getElementById("email").value;
-    var password=document.getElementById("pass").value;
+function createClinicianAccount(){
+    firebase.auth().signOut();
+    var email = document.getElementById("email").value;
+    var confirmEmail = document.getElementById("confirmEmail").value;
+    var password = document.getElementById("psw").value;
+    var confirmPassword = document.getElementById("confirmPsw").value;
+    var firstName = document.getElementById("firstName").value;
+    var lastName = document.getElementById("lastName").value;
+    var tel = document.getElementById("phoneNumber").value;
 
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-  .then(function() {
-    return firebase.auth().signInWithEmailAndPassword(email, password);
-  })
-  .catch(function(error) {
-    // Handle Errors here.
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode);
-    if(errorCode=="auth/invalid-email"){
-        
-    }
-  });
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+      });
 
+    
     firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
-    // User is signed in.
-    var displayName = user.displayName;
-    var email = user.email;
-    var emailVerified = user.emailVerified;
-    var photoURL = user.photoURL;
-    var isAnonymous = user.isAnonymous;
-    uid = user.uid;
-    var providerData = user.providerData;
-    console.log(uid);
-    var physRef = database.ref('/'+ uid +'/isPhysician');
-    physRef.once('value').then(function(snapshot){
-            var isPhysician = snapshot.val();
-            if(isPhysician==true){
-                window.open("physician/physicianHome.html", "_self");
-            }
-            else if(isPhysician==false){
-                window.open("user/userHome.html", "_self");
-            }
-            
-        });
-  }
-    else {
-    // User is signed out.
+    database.ref(user.uid).set({
+      isPhysician: true,
+      firstName: firstName,
+      lastName: lastName,
+      tel: tel,
+      clients : 0
+    });
+    database.ref("physicians").set({[lastName +", " +firstName] : user.uid});
     // ...
+  } 
+    });
+    
+
   }
-});
-
-}
-
-var input = document.getElementById("pass");
-input.addEventListener("keyup", function(event) {
-    event.preventDefault();
-    if (event.keyCode === 13) {
-        document.getElementById("myBtn").click();
-    }
-});
 
 </script>
 
