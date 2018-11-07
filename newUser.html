@@ -206,7 +206,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     var firstName = document.getElementById("firstName").value;
     var lastName = document.getElementById("lastName").value;
     var tel = document.getElementById("phoneNumber").value;
-    var clinicianUid = "JylfU2cO09Su2tFC35NhEVQCwW43";
+    var clinicianUid = "dr8uf3XC32URAgtttQ7ag7mM1zq1";
 
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
         // Handle Errors here.
@@ -225,7 +225,7 @@ firebase.auth().onAuthStateChanged(function(user) {
       tel: tel,
       clinician : clinicianUid
     });
-    database.ref(clinicianUid+"/clients").set({[lastName +", " +firstName] : user.uid});
+    database.ref(clinicianUid+"/clients").child(lastName+", " +firstName).set(user.uid);
     
     // ...
   } 
