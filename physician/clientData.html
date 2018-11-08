@@ -108,16 +108,16 @@ tr:hover {background-color: #f5f5f5;}
 
 
 <script>
-  var titles = ["Name", "Email", "Phone Number", "Level", "Most Recent Fall", "More Info"];
+  var titles = ["Name", "Email", "Phone Number"];
   var promises = [];
-  displayTitles(titles);
+  var table = document.getElementById("Clients");
+  var test = localStorage.getItem("user");
+  var row = table.insertRow(0);
+  var cell = row.insertCell(0);
+  cell.innerHTML = test;
 
 
-  function openUserData(uid){
-      localStorage.setItem("user", uid);
-      window.open("clientData.html", "_self");
 
- }
 
  function displayTitles(titles){
     var table = document.getElementById("Clients");
@@ -146,23 +146,12 @@ tr:hover {background-color: #f5f5f5;}
         var cell = row.insertCell(0);
         var emailCell = row.insertCell(1);
         var telCell = row.insertCell(2);
-        var levelCell = row.insertCell(3);
-        var fallCell = row.insertCell(4);
-        var buttonCell = row.insertCell(5);
-
-        var btn = document.createElement('input');
-        btn.type = "button";
-        btn.className = "btn";
-        btn.value = "Open User";
-        btn.onclick = function() {openUserData(childValue)};
-
-        buttonCell.appendChild(btn);
         
 
         console.log(childKey, childValue);
 
         promises.push(cell.innerHTML = childKey);
-        displayUserInfo(childValue, rowIndex, emailCell, telCell, fallCell, levelCell);
+        displayUserInfo(childValue, rowIndex, emailCell, telCell);
         
       });
       return Promise.all(promises);
@@ -172,7 +161,7 @@ tr:hover {background-color: #f5f5f5;}
     });
   }
 
-  function displayUserInfo(uid, row, emailCell, telCell, fallCell, levelCell){
+  function displayUserInfo(uid, row, emailCell, telCell){
     var table = document.getElementById("Clients");
     var row = table.insertRow(row);
     var userRef = database.ref(uid);
@@ -187,23 +176,11 @@ tr:hover {background-color: #f5f5f5;}
           break;
           case "tel":
             telCell.innerHTML = childValue;
-          break;
-          case "level":
-            levelCell.innerHTML = childValue;
-          break;
-          case "fall":
-            if(childValue===0){
-              fallCell.innerHTML = "None on Record";
-            }
-            else{
-              fallCell.innerHTML = childValue;
-            }
-          break;
         }
       });
     });
 
-    
+
 
     
 
