@@ -113,8 +113,9 @@ tr:hover {background-color: #f5f5f5;}
   displayTitles(titles);
 
 
-  function openUserData(uid){
+  function openUserData(uid, name){
       localStorage.setItem("user", uid);
+      localStorage.setItem("name", name);
       window.open("clientData.html", "_self");
 
  }
@@ -154,11 +155,15 @@ tr:hover {background-color: #f5f5f5;}
         btn.type = "button";
         btn.className = "btn";
         btn.value = "Open User";
-        btn.onclick = function() {openUserData(childValue)};
+        btn.onclick = function() {openUserData(childValue, childKey)};
 
         buttonCell.appendChild(btn);
+<<<<<<< HEAD
         
 
+=======
+      
+>>>>>>> 693d0dabadb7f2e2f10e55692f412a65058a38d6
 
         promises.push(cell.innerHTML = childKey);
         displayUserInfo(childValue, rowIndex, emailCell, telCell, fallCell, levelCell);
@@ -193,9 +198,23 @@ tr:hover {background-color: #f5f5f5;}
           break;
           case "fall":
             if(childValue===0){
+              fallCell.style.backgroundColor = "#90FF7C";
               fallCell.innerHTML = "None on Record";
             }
             else{
+              var date = new Date(childValue);
+              var currentDate = new Date();
+              var days = daysBetween(date, currentDate);
+
+              if(days<=7){
+                fallCell.style.backgroundColor = "#FF7C7C";
+              }
+              else if(days<=14){
+                fallCell.style.backgroundColor = "#FFC17C";
+              }
+              else{
+                fallCell.style.backgroundColor = "#90FF7C";
+              }
               fallCell.innerHTML = childValue;
             }
           break;
