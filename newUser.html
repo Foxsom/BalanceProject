@@ -236,7 +236,7 @@ firebase.auth().onAuthStateChanged(function(user) {
       tel: tel,
       clinician : clinicianUid,
       exercises: 0,
-      level: 'A',
+      level: 1,
       fall: 0
     });
     database.ref(clinicianUid+"/clients").child(lastName+", " +firstName).set(user.uid);
