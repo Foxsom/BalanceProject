@@ -76,5 +76,43 @@
   }
 
 
+  function formatPhoneNumber(phoneNumberString) {
+  var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+  var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/)
+  if (match) {
+    var intlCode = (match[1] ? '+1 ' : '')
+    return [intlCode, '(', match[2], ')-', match[3], '-', match[4]].join('')
+  }
+  return null
+}
 
+
+  function daysBetween(date1, date2) {
+
+ // adjust diff for for daylight savings
+ var hoursToAdjust = Math.abs(date1.getTimezoneOffset() /60) - Math.abs(date2.getTimezoneOffset() /60);
+ // apply the tz offset
+ date2.addHours(hoursToAdjust); 
+
+    // The number of milliseconds in one day
+    var ONE_DAY = 1000 * 60 * 60 * 24
+
+    // Convert both dates to milliseconds
+    var date1_ms = date1.getTime()
+    var date2_ms = date2.getTime()
+
+    // Calculate the difference in milliseconds
+    var difference_ms = Math.abs(date1_ms - date2_ms)
+
+    // Convert back to days and return
+    return Math.round(difference_ms/ONE_DAY)
+
+}
+
+// you'll want this addHours function too 
+
+Date.prototype.addHours= function(h){
+    this.setHours(this.getHours()+h);
+    return this;
+}
   
