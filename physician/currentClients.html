@@ -159,7 +159,6 @@ tr:hover {background-color: #f5f5f5;}
         buttonCell.appendChild(btn);
         
 
-        console.log(childKey, childValue);
 
         promises.push(cell.innerHTML = childKey);
         displayUserInfo(childValue, rowIndex, emailCell, telCell, fallCell, levelCell);
@@ -186,6 +185,7 @@ tr:hover {background-color: #f5f5f5;}
             emailCell.innerHTML = childValue;
           break;
           case "tel":
+            childValue = formatPhoneNumber(childValue);
             telCell.innerHTML = childValue;
           break;
           case "level":
@@ -209,6 +209,8 @@ tr:hover {background-color: #f5f5f5;}
 
     
   }
+
+  
 </script>
 
 
