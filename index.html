@@ -172,6 +172,8 @@ firebase.auth().onAuthStateChanged(function(user) {
     var isAnonymous = user.isAnonymous;
     uid = user.uid;
     var providerData = user.providerData;
+    localStorage.setItem("currentUser", uid);
+    
     console.log(uid);
     var physRef = database.ref('/'+ uid +'/isPhysician');
     physRef.once('value').then(function(snapshot){

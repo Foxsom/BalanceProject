@@ -67,7 +67,7 @@ table, th {
     border-bottom: 1px solid #ddd;
 
 }
-td{
+td {
   table-layout: auto;
     border: 1px solid black;
     border-collapse: collapse;
@@ -76,7 +76,11 @@ td{
     border-bottom: 1px solid #ddd;
   width :(100/17)%;
 }
-tr:hover {background-color: #f5f5f5;}
+
+td:hover {
+  background-color: #f5f5f5;
+}
+
 </style>
 
 
@@ -118,20 +122,20 @@ tr:hover {background-color: #f5f5f5;}
   <p id = "fall"></p>
 </div>
 <label for="levelA"><b>Level A Submissions:</b></label>
-    <table id = "levelA" style= "width=100%" >
+    <table id = "levelA" style= "width=100%">
       
     </table>
-
+<br>
 <label for="levelB"><b>Level B Submissions:</b></label>
-    <table id = "levelB" style= "width=100%" >
+    <table id = "levelB" style= "width=100%">
       
     </table>
-
+<br>
 <label for="levelC"><b>Level C Submissions:</b></label>
     <table id = "levelC" style= "width=100%" >
       
     </table>
-
+<br>
 <label for="levelD"><b>Level D Submissions:</b></label>
     <table id = "levelD" style= "width=100%" >
       
@@ -141,16 +145,28 @@ tr:hover {background-color: #f5f5f5;}
 <script>
   
 
+  var levelAExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor"];
+  var levelAStrength = ["Knee Bends", "Tandem Stance", "Sit to Stand", "Stair Walking"];
+
+  var levelBExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor"];
+  var levelBStrength = ["Knee Bends", "Backwards Walking", "Walking and Turning Around", "Sideways Walking", "Tandem Stance", "One Leg Stand", "Sit to Stand", "Stair Walking"];
+
+  var levelCExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors"];
+  var levelCStrength =  ["Knee Bends",  "Walking and Turning Around", "Sideways Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Sit to Stand", "Stair Walking"];
+
+  var levelCExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors"]
+  var levelDStrength =  ["Knee Bends", "Backwards Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Heel to Toe Walking Backwards", "Sit to Stand", "Stair Walking"];
+
+
+
+
   var levelATitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors", "Knee Bends", "Tandem Stance", "Sit to Stand", "Stair Walking", "Fell?"];
 
-  var levelBTitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors"];
-  var levelBReps = [];
+  var levelBTitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors", "Knee Bends", "Backwards Walking", "Walking and Turning Around", "Sideways Walking", "Tandem Stance", "One Leg Stand", "Sit to Stand", "Stair Walking", "Fell?"];
 
-  var levelCTitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors"];
-  var levelCReps = [];
+  var levelCTitles = ["Date", "Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors", "Knee Bends",  "Walking and Turning Around", "Sideways Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Sit to Stand", "Stair Walking", "Fell?"];
 
-  var levelDTitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors"];
-  var levelDReps = [];
+  var levelDTitles = ["Date", "Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors", "Knee Bends", "Backwards Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Heel to Toe Walking Backwards", "Sit to Stand", "Stair Walking", "Fell?"];
 
 
   var promises = [];
@@ -158,8 +174,15 @@ tr:hover {background-color: #f5f5f5;}
   var levelB = document.getElementById("levelB");
   var levelC = document.getElementById("levelC");
   var levelD = document.getElementById("levelD");
+
+  var levelAIndex = 1;
+  var levelBIndex = 1;
+  var levelCIndex = 1;
+  var levelDIndex = 1;
+
   var user = localStorage.getItem("user");
   var userRef = database.ref(user);
+  var exerciseRef = database.ref(user + "/exercises");
 
   var row = levelA.insertRow(0);
   var cell = row.insertCell(0);
@@ -168,117 +191,9 @@ tr:hover {background-color: #f5f5f5;}
   displayTitles(levelBTitles, levelB);
   displayTitles(levelCTitles, levelC);
   displayTitles(levelDTitles, levelD);
-
-
-
-
-
- function displayTopInfo(){
-  var name = document.getElementById("name");
-  var email = document.getElementById("email");
-  var tel = document.getElementById("tel");
-  var fall = document.getElementById("fall");
-  var level = document.getElementById("level");
-  name.innerHTML = localStorage.getItem("name");
-
-
-  userRef.once('value', function(snapshot){
-      snapshot.forEach(function(childSnapshot){
-        var childKey = childSnapshot.key;
-        var childValue = childSnapshot.val();
-        console.log(childKey);
-        switch(childKey){
-          case "email": 
-            email.innerHTML = childValue;
-          break;
-          case "tel":
-            childValue = formatPhoneNumber(childValue);
-            tel.innerHTML = childValue;
-          break;
-          case "level":
-            level.innerHTML = childValue;
-          break;
-          case "fall":
-            if(childValue===0){
-              fall.innerHTML = "None on Record";
-            }
-            else{
-              fall.innerHTML = childValue;
-            }
-          break;
-        }
-      });
-    });
-
- }
-
-
-
- function displayTitles(titles, table){
-    var titleRow = table.insertRow(0);
-    for (var i = 0; i<titles.length; i++){
-      var cell = titleRow.insertCell(i);
-      cell.innerHTML = titles[i];
-    }
-
-  }
-
-  function displayClientNames() {
-    firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    var rowIndex = 1;
-    var promises = [];
-
-    var table = document.getElementById("Clients");
-    database.ref(user.uid+"/clients").once('value', function(snapshot){
-      snapshot.forEach(function(childSnapshot){
-        var childKey = childSnapshot.key;
-        var childValue = childSnapshot.val();
-        var row = table.insertRow(rowIndex);
-        rowIndex++;
-        var cell = row.insertCell(0);
-        var emailCell = row.insertCell(1);
-        var telCell = row.insertCell(2);
-        
-
-        console.log(childKey, childValue);
-
-        promises.push(cell.innerHTML = childKey);
-        displayUserInfo(childValue, rowIndex, emailCell, telCell);
-        
-      });
-      return Promise.all(promises);
-    });
-    }
-
-    });
-  }
-
-  function displayUserInfo(uid, row, emailCell, telCell){
-    var table = document.getElementById("Clients");
-    var row = table.insertRow(row);
-    var userRef = database.ref(uid);
-    
-    userRef.once('value', function(snapshot){
-      snapshot.forEach(function(childSnapshot){
-        var childKey = childSnapshot.key;
-        var childValue = childSnapshot.val();
-        switch(childKey){
-          case "email": 
-            emailCell.innerHTML = childValue;
-          break;
-          case "tel":
-            telCell.innerHTML = childValue;
-        }
-      });
-    });
-
-
-
-    
-
-    
-  }
+  sortExercises();
+  
+  
 </script>
 
 

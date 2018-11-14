@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/3/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+
+
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+@media screen and (min-width: 601px) {
+    .topnav a {
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+}
+
+  @media screen and (max-width: 600px) {
+    .topnav a {
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 13px;
+
+  
+    }
+  }
+
+
+
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.topnav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.topnav-right {
+  float: right;
+}
+
+
+
+</style>
+
+
+<body>
+<script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+<script src="../functions.js"></script>
+<script>
+  var database;
+  initialize();
+  getRefs();
+  var user = getUser();
+</script>
+<div class="topnav" id = "navbar">
+	<a  href="userHome.html" >Home</a>
+  <a href="addUserExercise.html" >Add Exercise</a>
+	<a  class ="active" href="addDeviceUpload.html" >Upload Data</a>
+	<a  href="previousUserExercises.html" >Previous Exercises</a>
+
+	<div class="topnav-right">
+		<a href='../index.html' onclick="signOut()">Logout</a>
+	</div>
+</div>
+
+<div class="w3-light-grey">
+    <div id="myBar" class="w3-green" style="height:24px;width:0"></div>
+  </div>
+  <br>
+
+<input type="file" id="uploadFile"><br>
+
+<button onclick =  "uploadCSV()">Upload File</button>
+
+
+<script>
+  var user = localStorage.getItem("currentUser");
+  var userRef = database.ref(user);
+  var promises = [];
+  var fileButton = document.getElementById("uploadFile");
+  var storageRef;
+  var uploadRef;
+  var file;
+  var date;
+  var currentDate;
+
+  fileButton.addEventListener('change', function(e){
+      //Get File
+        file = e.target.files[0];
+        console.log(file);
+      //Get Storage Ref
+        date = new Date();
+        currentDate = date.toString();
+        storageRef = firebase.storage().ref(user+'/'+currentDate+'.csv');
+
+
+    });
+
+
+  function uploadCSV(){
+    var task = storageRef.put(file);
+    task.on('state_changed',
+      function complete(){
+        console.log("Upload Complete");
+      }
+      );
+    database.ref(user +'/dataUploads').child(currentDate).set(storageRef.toString());
+
+  }
+</script>
+
+
+</body>
+</html>

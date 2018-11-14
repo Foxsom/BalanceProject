@@ -74,7 +74,8 @@ body {
 </script>
 <div class="topnav" id = "navbar">
 	<a  href="userHome.html" >Home</a>
-	<a  class ="active" href="addUserExercise.html" >Add an Exercise</a>
+  <a  class ="active" href="addUserExercise.html" >Add Exercise</a>
+	<a  href="addDeviceUpload.html" >Upload Data</a>
 	<a  href="previousUserExercises.html" >Previous Exercises</a>
 
 	<div class="topnav-right">
@@ -86,8 +87,79 @@ body {
 	</section>
 
 <script>
-  var levelAStrengthen = ["Knee extensor", "Knee Flexor", "Hip Abductor"];
-	var levelABalance = ["Knee Bends" , "Tandem Stance", "Sit to Stand"];
+  var levelAExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor"];
+  var levelAStrength = ["Knee Bends", "Tandem Stance", "Sit to Stand", "Stair Walking"];
+
+  var levelBExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor"];
+  var levelBStrength = ["Knee Bends", "Backwards Walking", "Walking and Turning Around", "Sideways Walking", "Tandem Stance", "One Leg Stand", "Sit to Stand", "Stair Walking"];
+
+  var levelCExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors"];
+  var levelCStrength =  ["Knee Bends",  "Walking and Turning Around", "Sideways Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Sit to Stand", "Stair Walking"];
+
+  var levelCExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors"]
+  var levelDStrength =  ["Knee Bends", "Backwards Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Heel to Toe Walking Backwards", "Sit to Stand", "Stair Walking"];
+
+
+  var user = localStorage.getItem("currentUser");
+  var userRef = database.ref(user);
+  var exerciseRef = userRef.child("exercises");
+
+  var currentExercises = [];
+  var currentStrength = [];
+
+  userRef.once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        var childKey = childSnapshot.key;
+        var childValue = childSnapshot.val();
+        console.log(childKey);
+        
+        switch(childKey){
+          case "email": 
+            //email.innerHTML = childValue;
+          break;
+          case "tel":
+            //childValue = formatPhoneNumber(childValue);
+            //tel.innerHTML = childValue;
+          break;
+          case "level":
+            switch (childValue){
+              case "A":
+                currentExercises = levelAExercises;
+                currentStrength = levelAStrength;
+                console.log(currentExercises, currentStrength);
+              break;
+
+              case "B":
+                currentExercises = levelBExercises;
+                currentStrength = levelBStrength;
+                console.log(currentExercises, currentStrength);
+              break;
+
+              case "C":
+                currentExercises = levelCExercises;
+                currentStrength = levelCStrength;
+              break;
+
+              case "D":
+                currentExercises = levelDExercises;
+                currentStrength = levelDStrength;
+            }
+          break;
+          //case "exercises":
+          //  childSnapshot.forEach(function(dateSnapshot){
+          //    var date = dateSnapshot.key;
+
+          //  });
+          //break;
+        }
+        
+      });
+    });
+
+  
+
+
+
 </script>
 
 

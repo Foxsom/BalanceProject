@@ -116,3 +116,200 @@ Date.prototype.addHours= function(h){
     return this;
 }
   
+
+
+function displayTopInfo(){
+  var name = document.getElementById("name");
+  var email = document.getElementById("email");
+  var tel = document.getElementById("tel");
+  var fall = document.getElementById("fall");
+  var level = document.getElementById("level");
+  name.innerHTML = localStorage.getItem("name");
+
+
+  userRef.once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        var childKey = childSnapshot.key;
+        var childValue = childSnapshot.val();
+        switch(childKey){
+          case "email": 
+            email.innerHTML = childValue;
+          break;
+          case "tel":
+            childValue = formatPhoneNumber(childValue);
+            tel.innerHTML = childValue;
+          break;
+          case "level":
+            level.innerHTML = childValue;
+          break;
+          case "fall":
+            if(childValue===0){
+              fall.innerHTML = "None on Record";
+            }
+            else{
+              fall.innerHTML = childValue;
+            }
+          break;
+        }
+      });
+    });
+
+ }
+
+
+ 
+  function displayTitles(titles, table){
+    var titleRow = table.insertRow(0);
+    for (var i = 0; i<titles.length; i++){
+      var cell = titleRow.insertCell(i);
+      cell.innerHTML = titles[i];
+    }
+
+  }
+
+  function searchForTitle(title, table){
+    var searchSet;
+
+    switch (table){
+      case "A":
+        searchSet = levelATitles;
+      break;
+
+      case "B":
+        searchSet = levelBTitles;
+      break;
+
+      case "C":
+        searchSet = levelCTitles;
+      break;
+
+      case "D":
+        searchSet = levelDTitles;
+      break;
+    }
+
+    for (var i = 0; i<searchSet.length; i++){
+      if(searchSet[i]===title){
+        console.log(i);
+        return i;
+      }
+    }
+    return null;
+  }
+
+  function sortExercises(){
+    exerciseRef.once('value', function(snapshot){
+      snapshot.forEach(function(dateSnapshot){
+        var exerciseDate = dateSnapshot.key;
+        var level;
+        var row;
+
+        dateSnapshot.forEach(function(levelSnapshot){
+          var exerciseName = levelSnapshot.key;
+          var exerciseCount = levelSnapshot.val();
+            if(exerciseName.toUpperCase() === 'LEVEL'){
+              level = exerciseCount;
+              switch(level){
+                case "A":
+                  row = levelA.insertRow(levelAIndex);
+                  makeRowA(row);
+                  
+                break;
+                case "B":
+                  row = levelB.insertRow(levelBIndex);
+                  makeRowB(row);
+                  
+                break;
+                case "C":
+                  row = levelC.insertRow(levelCIndex);
+                  makeRowC(row);
+                  
+                break;
+                case "D":
+                  row = levelD.insertRow(levelDIndex);
+                  makeRowD(row);
+                  
+                break;
+              }
+            }
+
+        });
+
+        dateSnapshot.forEach(function(exerciseSnapshot){
+          var exerciseName = exerciseSnapshot.key;
+          var exerciseCount = exerciseSnapshot.val();
+          if(exerciseCount === true){
+              exerciseCount = "Yes";
+            }
+            else if(exerciseCount === false){
+              exerciseCount = "No";
+            }
+          var index = searchForTitle(exerciseName, level);
+          if(index === null){
+            
+          }
+          else{
+            row.deleteCell(index);
+            var exercisecell = row.insertCell(index);
+            exercisecell.innerHTML = exerciseCount;
+            if(exerciseName === "Fell?"){
+              if(exerciseCount === "Yes"){
+                exercisecell.style.backgroundColor = "#FF7C7C";
+              }
+              else if(exerciseCount === "No"){
+                exercisecell.style.backgroundColor = "#90FF7C";
+              }
+            }
+          }
+          console.log(exerciseName, exerciseCount, index);
+          
+        });
+        row.deleteCell(0);
+        var dateCell = row.insertCell(0);
+        dateCell.innerHTML = exerciseDate;
+      });
+
+      switch(level){
+                case "A":
+                  levelAIndex++;
+                break;
+                case "B":
+                  levelBIndex++;
+                break;
+                case "C":
+                  levelCIndex++;
+                break;
+                case "D":
+                  levelDIndex++;
+                break;
+              }
+    });
+
+  }
+
+  function makeRowA(row){
+    for (var i = 0; i<levelATitles.length; i++){
+      var cell = row.insertCell(0);
+    }
+  }
+
+  function makeRowB(rowIndex){
+    for (var i = 0; i<levelBTitles.length; i++){
+      var row = levelB.insertRow(rowIndex);
+      var cell = row.insertCell(0);
+    }
+  }
+
+  function makeRowC(rowIndex){
+    for (var i = 0; i<levelCTitles.length; i++){
+      var row = levelC.insertRow(rowIndex);
+      var cell = row.insertCell(0);
+    }
+  }
+
+  function makeRowD(rowIndex){
+    for (var i = 0; i<levelDTitles.length; i++){
+      var row = levelD.insertRow(rowIndex);
+      var cell = row.insertCell(0);
+    }
+  }

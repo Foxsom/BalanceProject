@@ -92,7 +92,8 @@ tr:hover {background-color: #f5f5f5;}
 </script>
 <div class="topnav" id = "navbar">
 	<a href="userHome.html" >Home</a>
-	<a  href="addUserExercise.html" >Add an Exercise</a>
+  <a href="addUserExercise.html" >Add Exercise</a>
+	<a  href="addDeviceUpload.html" >Upload Data</a>
 	<a  class ="active" href=previousUserExercises.html >Previous Exercises</a>
 
 	<div class="topnav-right">
@@ -100,78 +101,64 @@ tr:hover {background-color: #f5f5f5;}
 	</div>
 </div>
 
-<section id=topsection >
-    <table id = "Exercises" style= "width=100%" >
+<label for="levelA"><b>Level A Submissions:</b></label>
+    <table id = "levelA" style= "width=100%">
       
     </table>
-	</section>
+<br>
+<label for="levelB"><b>Level B Submissions:</b></label>
+    <table id = "levelB" style= "width=100%">
+      
+    </table>
+<br>
+<label for="levelC"><b>Level C Submissions:</b></label>
+    <table id = "levelC" style= "width=100%" >
+      
+    </table>
+<br>
+<label for="levelD"><b>Level D Submissions:</b></label>
+    <table id = "levelD" style= "width=100%" >
+      
+    </table>
 
 <script>
   
 
   var titles = ["Date:","Exercise1", "Exercise2", "Exercise3", "Exercise4", "Exercise5", "Exercise6", "Exercise7", "Exercise8", "Exercise9", "Exercise10", "Exercise11", "Exercise12", "Exercise13", "Exercise14", "Exercise15", "Exercise16"];
   
+  var levelATitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors", "Knee Bends", "Tandem Stance", "Sit to Stand", "Stair Walking", "Fell?"];
+
+  var levelBTitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors", "Knee Bends", "Backwards Walking", "Walking and Turning Around", "Sideways Walking", "Tandem Stance", "One Leg Stand", "Sit to Stand", "Stair Walking", "Fell?"];
+
+  var levelCTitles = ["Date", "Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors", "Knee Bends",  "Walking and Turning Around", "Sideways Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Sit to Stand", "Stair Walking", "Fell?"];
+
+  var levelDTitles = ["Date", "Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors", "Knee Bends", "Backwards Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Heel to Toe Walking Backwards", "Sit to Stand", "Stair Walking", "Fell?"];
 
   
-   firebase.auth().onAuthStateChanged(function(user) {
+  var promises = [];
+  var levelA = document.getElementById("levelA");
+  var levelB = document.getElementById("levelB");
+  var levelC = document.getElementById("levelC");
+  var levelD = document.getElementById("levelD");
+
+  var levelAIndex = 1;
+  var levelBIndex = 1;
+  var levelCIndex = 1;
+  var levelDIndex = 1;
+
+  var user = localStorage.getItem("user");
+  var userRef = database.ref(user);
+  var exerciseRef = database.ref(user + "/exercises");
+
+  var row = levelA.insertRow(0);
+  var cell = row.insertCell(0);
+  displayTitles(levelATitles, levelA);
+  displayTitles(levelBTitles, levelB);
+  displayTitles(levelCTitles, levelC);
+  displayTitles(levelDTitles, levelD);
+  sortExercises();
   
-  if (user) {
-    
 
-    var assigned;
-  var table = document.getElementById("Exercises");
-  var titleRow = table.insertRow(0);
-  var rowIndex=1;
-  var cellIndex = 0;
-
-  database.ref(user.uid+"/assigned").once('value', function(snapshot) {
-    assigned = snapshot.val();
-    for (var i = 0; i < 17; i++) {
-      
-      //if(String(assigned).charAt(i)=='1'){
-        var cell = titleRow.insertCell(i);
-        cell.innerHTML = titles[i];
-      //}
-    } 
-
-});
-
-  database.ref(user.uid+"/Exercises").once('value', function(snapshot) {
-  snapshot.forEach(function(childSnapshot) {
-    var childKey = childSnapshot.key;
-    var childData = childSnapshot.val();
-    var row = table.insertRow(rowIndex);
-    var cell = row.insertCell(0);
-    cell.innerHTML = childKey;
-    var cellIndex = 1;
-
-   
-
-
-      database.ref(user.uid+"/Exercises/"+childKey).once('value', function(innerSnapshot) {
-        innerSnapshot.forEach(function(innerchildSnapshot) {
-          var innerchildKey = innerchildSnapshot.key;
-          var innerchildData = innerchildSnapshot.val();
-          var cell = row.insertCell(cellIndex);
-          cell.innerHTML = innerchildData;
-          //var titleCell = titleRow.insertCell(cellIndex);
-          //titleCell.innerHTML = innerchildKey;
-          cellIndex++;
-          
-
-    // ...
-  });
-});
-      rowIndex++;
-    // ...
-  });
-});
-
-  } 
-  else {
-    window.open("../noSign.html", "_self");
-  }
-});
   
 </script>
 
