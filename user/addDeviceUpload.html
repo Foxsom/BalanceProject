@@ -58,7 +58,14 @@ body {
   float: right;
 }
 
-
+#uploader{
+  display: none;
+  align: center;
+  width:95%;
+}
+#success{
+  display:none;
+}
 
 </style>
 
@@ -83,15 +90,13 @@ body {
 		<a href='../index.html' onclick="signOut()">Logout</a>
 	</div>
 </div>
-
-<div class="w3-light-grey">
-    <div id="myBar" class="w3-green" style="height:24px;width:0"></div>
-  </div>
-  <br>
+<br>
+<progress value="0" max ="100" id="uploader">0%</progress>
 
 <input type="file" id="uploadFile"><br>
 
 <button onclick =  "uploadCSV()">Upload File</button>
+<p id = "success">Upload Complete</p>
 
 
 <script>
@@ -104,6 +109,8 @@ body {
   var file;
   var date;
   var currentDate;
+  var uploader = document.getElementById("uploader");
+  var success = document.getElementById("success");
 
   fileButton.addEventListener('change', function(e){
       //Get File
@@ -119,14 +126,20 @@ body {
 
 
   function uploadCSV(){
+    uploader.style.display = "block";
     var task = storageRef.put(file);
     task.on('state_changed',
+      function progress(snapshot){
+        var percentage = (snapshot.bytesTransferred / snapshot.totalBytes)*100;
+        uploader.value = percentage;
+      },
+
       function complete(){
-        console.log("Upload Complete");
+        
       }
       );
     database.ref(user +'/dataUploads').child(date).set(user+'/'+date+'.csv');
-
+    //success.style.display = "block";
   }
 </script>
 

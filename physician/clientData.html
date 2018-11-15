@@ -81,6 +81,9 @@ td:hover {
   background-color: #f5f5f5;
 }
 
+
+
+
 </style>
 
 
@@ -106,7 +109,7 @@ td:hover {
   </div>
 </div>
 
-<div class = "form-group">
+<div display = "hidden" id = "content">
   <label for="name"><b>Name:</b></label>
   <p id = "name" ></p>
 
@@ -121,7 +124,7 @@ td:hover {
 
     <label for="fall"><b>Most Recent Fall Date:</b></label>
   <p id = "fall"></p>
-</div>
+
 <label for="levelA"><b>Level A Submissions:</b></label>
     <table id = "levelA" style= "width=100%">
       
@@ -146,25 +149,9 @@ td:hover {
     <table id = "uploadData" style= "width=100%" >
       
     </table>
+  </div>
 
 <script async>
-  
-
-  var levelAExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor"];
-  var levelAStrength = ["Knee Bends", "Tandem Stance", "Sit to Stand", "Stair Walking"];
-
-  var levelBExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor"];
-  var levelBStrength = ["Knee Bends", "Backwards Walking", "Walking and Turning Around", "Sideways Walking", "Tandem Stance", "One Leg Stand", "Sit to Stand", "Stair Walking"];
-
-  var levelCExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors"];
-  var levelCStrength =  ["Knee Bends",  "Walking and Turning Around", "Sideways Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Sit to Stand", "Stair Walking"];
-
-  var levelCExercises = ["Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors"]
-  var levelDStrength =  ["Knee Bends", "Backwards Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Heel to Toe Walking Backwards", "Sit to Stand", "Stair Walking"];
-
-
-
-
   var levelATitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors", "Knee Bends", "Tandem Stance", "Sit to Stand", "Stair Walking", "Fell?"];
 
   var levelBTitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors", "Knee Bends", "Backwards Walking", "Walking and Turning Around", "Sideways Walking", "Tandem Stance", "One Leg Stand", "Sit to Stand", "Stair Walking", "Fell?"];
@@ -192,19 +179,26 @@ td:hover {
 
   var row = levelA.insertRow(0);
   var cell = row.insertCell(0);
+  
   displayTopInfo();
+
   displayTitles(levelATitles, levelA);
+
   displayTitles(levelBTitles, levelB);
+
   displayTitles(levelCTitles, levelC);
+
   displayTitles(levelDTitles, levelD);
+
   sortExercises();
+
   getUploads();
-
-
-
   
   
-
+  
+  
+  
+  
 </script>
 
 

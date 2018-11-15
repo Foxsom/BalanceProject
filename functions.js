@@ -127,6 +127,7 @@ function displayTopInfo(){
   name.innerHTML = localStorage.getItem("name");
 
 
+
   userRef.once('value', function(snapshot){
       snapshot.forEach(function(childSnapshot){
         var childKey = childSnapshot.key;
@@ -340,6 +341,9 @@ function displayTopInfo(){
         downloadbtn.value = "Download";
         downloadbtn.onclick = function() {downloadFile(childValue)};
         downloadCell.appendChild(downloadbtn);
+
+        var content = document.getElementById("content");
+
 
       });
     });
