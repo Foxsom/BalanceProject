@@ -81,6 +81,7 @@ td:hover {
   background-color: #f5f5f5;
 }
 
+
 </style>
 
 
@@ -88,7 +89,6 @@ td:hover {
 <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="../functions.js"></script>
 <script src="../papaparse.js"></script>
 <script src="../jquery-3.3.1.js"></script>
@@ -109,33 +109,48 @@ td:hover {
   </div>
 </div>
 
+<br>
+<label for="myProgress"><b>Upload Contents:</b></label>
+<p id = "loading">Loading Data...</p>
 
-<label for="uploadData"><b>Upload Contents:</b></label>
-    <table id = "uploadData" style= "width=100%" >
-      
-    </table>
 
 <script>
+  var elem = document.getElementById("loading");
+  var sizeLabel = document.getElementById("sizeLabel");
   var url = localStorage.getItem("url");
+  var size;
     function arrayToTable(tableData) {
         var table = $('<table></table>');
         $(tableData).each(function (i, rowData) {
             var row = $('<tr></tr>');
             $(rowData).each(function (j, cellData) {
-                row.append($('<td>'+cellData+'</td>'));
+              row.append($('<td>'+cellData+'</td>'));
             });
+
+
+
             table.append(row);
         });
+        loading.innerHTML = "";
         return table;
     }
 
-    $.ajax({
+    var xhr = $.ajax({
         type: "GET",
         url: url,
         success: function (data) {
-            $('body').append(arrayToTable(Papa.parse(data).data));
+          size = xhr.getResponseHeader('Content-Length');
+          $('body').append(arrayToTable(Papa.parse(data).data));
         }
     });
+
+
+
+
+
+    
+
+
 </script>
 
 
