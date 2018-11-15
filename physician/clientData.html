@@ -202,15 +202,7 @@ td:hover {
 
 
 
-  function downloadFile(link){
-    //console.log(link);
-    var storageRef = firebase.storage().ref(link);
-    storageRef.getDownloadURL().then(function(url){
-      console.log(url);
-      window.open(url, "_self");
-    });
-
-  }
+  
   
 
 </script>

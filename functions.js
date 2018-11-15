@@ -313,7 +313,7 @@ function displayTopInfo(){
   }
 
     function getUploads(){
-    displayTitles(["Date Last Modified:", "Download File:"], uploads);
+    displayTitles(["Date Last Modified:", "View Contents", "Download File:"], uploads);
     var rowIndex = 1;
     database.ref(user+"/dataUploads").once('value', function(snapshot){
       snapshot.forEach(function(childSnapshot){
@@ -323,16 +323,45 @@ function displayTopInfo(){
         var row = uploads.insertRow(rowIndex);
         rowIndex++;
         var dateCell = row.insertCell(0);
-        var downloadCell = row.insertCell(1);
+        var contentsCell = row.insertCell(1);
+        var downloadCell = row.insertCell(2);
         dateCell.innerHTML = childKey;
 
-        var btn = document.createElement('input');
-        btn.type = "button";
-        btn.className = "btn";
-        btn.value = "Download";
-        btn.onclick = function() {downloadFile(childValue)};
-        downloadCell.appendChild(btn);
+        var viewdatabtn = document.createElement('input');
+        viewdatabtn.type = "button";
+        viewdatabtn.className = "viewfilebtn";
+        viewdatabtn.value = "View File";
+        viewdatabtn.onclick = function() {viewFile(childValue, childKey)};
+        contentsCell.appendChild(viewdatabtn);
+
+        var downloadbtn = document.createElement('input');
+        downloadbtn.type = "button";
+        downloadbtn.className = "btn";
+        downloadbtn.value = "Download";
+        downloadbtn.onclick = function() {downloadFile(childValue)};
+        downloadCell.appendChild(downloadbtn);
 
       });
     });
+  }
+
+  function viewFile(link, date){
+    var storageRef = firebase.storage().ref(link);
+    storageRef.getDownloadURL().then(function(url){
+      console.log(url);
+      localStorage.setItem("url", url);
+      localStorage.setItem("date", date);
+      window.open("viewUpload.html", "_self");
+
+    });
+  }
+
+  function downloadFile(link){
+    //console.log(link);
+    var storageRef = firebase.storage().ref(link);
+    storageRef.getDownloadURL().then(function(url){
+      console.log(url);
+      window.open(url, "_self");
+    });
+
   }
