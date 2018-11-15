@@ -90,6 +90,8 @@ td:hover {
 <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="../functions.js"></script>
+<script src="../papaparse.js"></script>
+<script src="../jquery-3.3.1.js"></script>
 <script>
   var database;
   initialize();
@@ -113,23 +115,29 @@ td:hover {
       
     </table>
 
-<script type="text/javascript"charset="utf-8">
-            d3.text("data.csv", function(data) {
-                var parsedCSV = d3.csv.parseRows(data);
-
-                var container = d3.select("body")
-                    .append("table")
-
-                    .selectAll("tr")
-                        .data(parsedCSV).enter()
-                        .append("tr")
-
-                    .selectAll("td")
-                        .data(function(d) { return d; }).enter()
-                        .append("td")
-                        .text(function(d) { return d; });
+<script>
+  var url = localStorage.getItem("url");
+    function arrayToTable(tableData) {
+        var table = $('<table></table>');
+        $(tableData).each(function (i, rowData) {
+            var row = $('<tr></tr>');
+            $(rowData).each(function (j, cellData) {
+                row.append($('<td>'+cellData+'</td>'));
             });
-        </script>
+            table.append(row);
+        });
+        return table;
+    }
+
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (data) {
+            $('body').append(arrayToTable(Papa.parse(data).data));
+        }
+    });
+</script>
+
 
 
 </body>
