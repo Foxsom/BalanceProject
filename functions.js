@@ -190,7 +190,6 @@ function displayTopInfo(){
 
     for (var i = 0; i<searchSet.length; i++){
       if(searchSet[i]===title){
-        console.log(i);
         return i;
       }
     }
@@ -261,7 +260,6 @@ function displayTopInfo(){
               }
             }
           }
-          console.log(exerciseName, exerciseCount, index);
           
         });
         row.deleteCell(0);
@@ -312,4 +310,29 @@ function displayTopInfo(){
       var row = levelD.insertRow(rowIndex);
       var cell = row.insertCell(0);
     }
+  }
+
+    function getUploads(){
+    displayTitles(["Date Last Modified:", "Download File:"], uploads);
+    var rowIndex = 1;
+    database.ref(user+"/dataUploads").once('value', function(snapshot){
+      snapshot.forEach(function(childSnapshot){
+        var childKey = childSnapshot.key;
+        var childValue = childSnapshot.val();
+        console.log(childKey);
+        var row = uploads.insertRow(rowIndex);
+        rowIndex++;
+        var dateCell = row.insertCell(0);
+        var downloadCell = row.insertCell(1);
+        dateCell.innerHTML = childKey;
+
+        var btn = document.createElement('input');
+        btn.type = "button";
+        btn.className = "btn";
+        btn.value = "Download";
+        btn.onclick = function() {downloadFile(childValue)};
+        downloadCell.appendChild(btn);
+
+      });
+    });
   }

@@ -92,6 +92,7 @@ td:hover {
 <script>
   var database;
   initialize();
+  var storage = firebase.storage();
   getRefs();
   var user = getUser();
 
@@ -140,7 +141,11 @@ td:hover {
     <table id = "levelD" style= "width=100%" >
       
     </table>
-
+<br>
+<label for="uploadData"><b>Uploaded Data:</b></label>
+    <table id = "uploadData" style= "width=100%" >
+      
+    </table>
 
 <script>
   
@@ -174,6 +179,7 @@ td:hover {
   var levelB = document.getElementById("levelB");
   var levelC = document.getElementById("levelC");
   var levelD = document.getElementById("levelD");
+  var uploads = document.getElementById("uploadData");
 
   var levelAIndex = 1;
   var levelBIndex = 1;
@@ -192,8 +198,21 @@ td:hover {
   displayTitles(levelCTitles, levelC);
   displayTitles(levelDTitles, levelD);
   sortExercises();
+  getUploads();
+
+
+
+  function downloadFile(link){
+    //console.log(link);
+    var storageRef = firebase.storage().ref(link);
+    storageRef.getDownloadURL().then(function(url){
+      console.log(url);
+      window.open(url, "_self");
+    });
+
+  }
   
-  
+
 </script>
 
 
