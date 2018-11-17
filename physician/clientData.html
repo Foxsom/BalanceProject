@@ -56,15 +56,17 @@ body {
   float: right;
 }
 
-
+#levelALabel, #levelBLabel, #levelCLabel, #levelDLabel, #uploadDataLabel{
+  display:none;
+}
 table, th {
+    display:none;
     table-layout: auto;
     width: 100%;
     border: 1px solid black;
     border-collapse: collapse;
-   
     text-align: center;
-    border-bottom: 1px solid #ddd;
+    border: 1px solid;
 
 }
 td {
@@ -125,27 +127,27 @@ td:hover {
     <label for="fall"><b>Most Recent Fall Date:</b></label>
   <p id = "fall"></p>
 
-<label for="levelA"><b>Level A Submissions:</b></label>
+<label id = "levelALabel" for="levelA"><b>Level A Submissions:</b></label>
     <table id = "levelA" style= "width=100%">
       
     </table>
 <br>
-<label for="levelB"><b>Level B Submissions:</b></label>
+<label id = "levelBLabel" for="levelB"><b>Level B Submissions:</b></label>
     <table id = "levelB" style= "width=100%">
       
     </table>
 <br>
-<label for="levelC"><b>Level C Submissions:</b></label>
+<label id = "levelCLabel" for="levelC"><b>Level C Submissions:</b></label>
     <table id = "levelC" style= "width=100%" >
       
     </table>
 <br>
-<label for="levelD"><b>Level D Submissions:</b></label>
+<label id = "levelDLabel" for="levelD"><b>Level D Submissions:</b></label>
     <table id = "levelD" style= "width=100%" >
       
     </table>
 <br>
-<label for="uploadData"><b>Uploaded Data:</b></label>
+<label id = "uploadDataLabel" for="uploadData"><b>Uploaded Data:</b></label>
     <table id = "uploadData" style= "width=100%" >
       
     </table>

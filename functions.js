@@ -32,6 +32,7 @@
   }
 
   function signOut(){
+    localStorage.clear();
     firebase.auth().signOut()
       .catch(function (err) {
    // Handle errors
@@ -198,10 +199,10 @@ function displayTopInfo(){
   }
 
   function sortExercises(){
+    var level;
     exerciseRef.once('value', function(snapshot){
       snapshot.forEach(function(dateSnapshot){
         var exerciseDate = dateSnapshot.key;
-        var level;
         var row;
 
         dateSnapshot.forEach(function(levelSnapshot){
@@ -213,21 +214,29 @@ function displayTopInfo(){
                 case "A":
                   row = levelA.insertRow(levelAIndex);
                   makeRowA(row);
+                  levelALabel.style.display = "block";
+                  levelA.style.display = "table";
                   
                 break;
                 case "B":
                   row = levelB.insertRow(levelBIndex);
                   makeRowB(row);
+                  levelBLabel.style.display = "block";
+                  levelB.style.display = "table";
                   
                 break;
                 case "C":
                   row = levelC.insertRow(levelCIndex);
                   makeRowC(row);
+                  levelCLabel.style.display = "block";
+                  levelC.style.display = "table";
                   
                 break;
                 case "D":
                   row = levelD.insertRow(levelDIndex);
                   makeRowD(row);
+                  levelDLabel.style.display = "block";
+                  levelD.style.display = "table";
                   
                 break;
               }
@@ -320,7 +329,10 @@ function displayTopInfo(){
       snapshot.forEach(function(childSnapshot){
         var childKey = childSnapshot.key;
         var childValue = childSnapshot.val();
-        console.log(childKey);
+        if(childKey!=null){
+          uploadData.style.display = "table";
+          uploadDataLabel.style.display = "flex";
+        }
         var row = uploads.insertRow(rowIndex);
         rowIndex++;
         var dateCell = row.insertCell(0);
@@ -369,3 +381,20 @@ function displayTopInfo(){
     });
 
   }
+
+  function storeDatabaseItem(path, name){
+    console.log(path);
+    var item = localStorage.getItem(path);
+    if(item ===null){
+      database.ref(path).once('value').then(function(snapshot){
+        item = snapshot.val();
+        console.log(item);
+        localStorage.setItem(name, item);
+        return snapshot.val();
+      });
+    }
+    else{
+      return item;
+    }
+  }
+

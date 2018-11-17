@@ -182,6 +182,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                 window.open("physician/physicianHome.html", "_self");
             }
             else if(isPhysician==false){
+                storeDatabaseItem(uid +"/clinician", "physID");
                 window.open("user/userHome.html", "_self");
             }
             
