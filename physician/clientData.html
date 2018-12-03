@@ -56,11 +56,11 @@ body {
   float: right;
 }
 
-#levelALabel, #levelBLabel, #levelCLabel, #levelDLabel, #uploadDataLabel{
-  display:block;
+#levelALabel, #levelBLabel, #levelCLabel, #levelDLabel, #uploadDataLabel, #additionalLabel{
+  display:none;
 }
 table, th {
-    display:table;
+    display:none;
     table-layout: auto;
     width: 100%;
     border: 1px solid black;
@@ -79,7 +79,7 @@ td {
   width :(100/17)%;
 }
 
-td:hover {
+tr:hover {
   background-color: #f5f5f5;
 }
 
@@ -94,6 +94,7 @@ td:hover {
 <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
 <script src="../functions.js"></script>
+<script src="../moment.js"></script>
 <script async>
   var database;
   initialize();
@@ -147,11 +148,12 @@ td:hover {
       
     </table>
 <br>
-<label id = "additionalExercises" for="levelD"><b>Additional Exercises:</b></label>
+<label id = "additionalLabel" for="additionalExercises"><b>Additional Exercises:</b></label>
     <table id = "additionalExercises" style= "width=100%" >
       
     </table>
 <br>
+
 <label id = "uploadDataLabel" for="uploadData"><b>Uploaded Data:</b></label>
     <table id = "uploadData" style= "width=100%" >
       
@@ -159,26 +161,29 @@ td:hover {
   </div>
 
 <script async>
-  var levelATitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors", "Knee Bends", "Tandem Stance", "Sit to Stand", "Stair Walking", "Fell?"];
+  var levelATitles = ["Date", "Knee Extensors", "Knee Flexor", "Hip Abductor", "Knee Bends", "Tandem Stance", "Sit To Stand"];
 
-  var levelBTitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors", "Knee Bends", "Backwards Walking", "Walking and Turning Around", "Sideways Walking", "Tandem Stance", "One Leg Stand", "Sit to Stand", "Stair Walking", "Fell?"];
+  var levelBTitles = ["Date", "Knee Extensors", "Knee Flexor", "Hip Abductor", "Knee Bends", "Backwards Walking", "Walking And Turning Around", "Sideways Walking", "Tandem Stance", "One Leg Stand", "Sit To Stand"];
 
-  var levelCTitles = ["Date", "Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantar Flexors", "Ankle Dorsiflexors", "Knee Bends",  "Walking and Turning Around", "Sideways Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Sit to Stand", "Stair Walking", "Fell?"];
+  var levelCTitles = ["Date", "Knee Extensors", "Knee Flexor", "Hip Abductor", "Ankle Plantar Flexors", "Ankle Dorsiflexors", "Knee Bends",  "Walking And Turning Around", "Sideways Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Sit To Stand"];
 
-  var levelDTitles = ["Date", "Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors", "Knee Bends", "Backwards Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Heel to Toe Walking Backwards", "Sit to Stand", "Stair Walking", "Fell?"];
+  var levelDTitles = ["Date", "Knee Extensors", "Knee Flexor", "Hip Abductor", "Ankle Plantar Flexors", "Ankle Dorsiflexors", "Knee Bends", "Backwards Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Heel Toe Walking Backwards", "Sit To Stand"];
 
+  var additionalTitles = ["Date"];
 
   var promises = [];
   var levelA = document.getElementById("levelA");
   var levelB = document.getElementById("levelB");
   var levelC = document.getElementById("levelC");
   var levelD = document.getElementById("levelD");
+  var additional = document.getElementById("additionalExercises");
   var uploads = document.getElementById("uploadData");
 
   var levelAIndex = 1;
   var levelBIndex = 1;
   var levelCIndex = 1;
   var levelDIndex = 1;
+  var additionalIndex = 1;
 
   var user = localStorage.getItem("user");
   var userRef = database.ref(user);
@@ -189,7 +194,7 @@ td:hover {
   var rowC = levelA.insertRow(0);
   var rowD = levelA.insertRow(0);
   //var cell = row.insertCell(0);
-  
+
   displayTopInfo();
 
   displayTitles(levelATitles, levelA);
@@ -199,6 +204,8 @@ td:hover {
   displayTitles(levelCTitles, levelC);
 
   displayTitles(levelDTitles, levelD);
+
+  displayTitles(additionalTitles, additional);
 
   displayAExercises();
 
@@ -210,6 +217,42 @@ td:hover {
 
   getUploads();
 
+function addAdditionalItem(key, value, date){
+  additionalLabel.style.display = "block";
+          additionalExercises.style.display = "table";
+  var titleIndex = searchForTitle(key, "add");
+  if(titleIndex==null){
+    additionalTitles.push(key);
+    addTitleColumn(additional, additionalTitles, additionalIndex);
+    titleIndex = searchForTitle(key, "add");
+    var row = additional.rows[additionalIndex];
+    row.cells[titleIndex].innerHTML = value;
+  }
+  else{
+    var row = additional.rows[additionalIndex];
+    row.cells[titleIndex].innerHTML = value;
+  }
+
+}
+
+function addTitleColumn(table, titles, rowIndex){
+  var titleRow = table.rows[0];
+  var newTitle = titleRow.insertCell(titles.length-1);
+  newTitle.innerHTML = titles[titles.length-1];
+  try{
+  for(var i=1; i<rowIndex+1; i++){
+    var row = table.rows[i];
+    for(var j=row.cells.length; j<titles.length;j++){
+      console.log(titles[titles.length-1], i, j);
+      var newCell = row.insertCell(j);
+    }
+    
+  }
+}
+catch{
+}
+
+}
 
   
   

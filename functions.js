@@ -1,4 +1,5 @@
-	function removeElements(){
+	
+  function removeElements(){
 		var node = document.getElementById("topsection");
 		while(node.firstChild){
 			node.removeChild(node.firstChild);
@@ -145,11 +146,12 @@ function displayTopInfo(){
             level.innerHTML = childValue;
           break;
           case "fall":
-            if(childValue===0){
+            if(childValue===false){
               fall.innerHTML = "None on Record";
             }
             else{
-              fall.innerHTML = childValue;
+              var date = moment().format("YYYY-MM-DD");
+              fall.innerHTML = date;
             }
           break;
         }
@@ -188,6 +190,10 @@ function displayTopInfo(){
       case "D":
         searchSet = levelDTitles;
       break;
+
+      case "add":
+        searchSet = additionalTitles;
+      break;
     }
 
     for (var i = 0; i<searchSet.length; i++){
@@ -198,108 +204,10 @@ function displayTopInfo(){
     return null;
   }
 
-  function sortExercises(){
-    var level;
-    exerciseRef.once('value', function(snapshot){
-      snapshot.forEach(function(dateSnapshot){
-        var exerciseDate = dateSnapshot.key;
-        var row;
-
-        dateSnapshot.forEach(function(levelSnapshot){
-          var exerciseName = levelSnapshot.key;
-          var exerciseCount = levelSnapshot.val();
-            if(exerciseName.toUpperCase() === 'LEVEL'){
-              level = exerciseCount;
-              switch(level){
-                case "A":
-                  row = levelA.insertRow(levelAIndex);
-                  makeRowA(row);
-                  levelALabel.style.display = "block";
-                  levelA.style.display = "table";
-                  
-                break;
-                case "B":
-                  row = levelB.insertRow(levelBIndex);
-                  makeRowB(row);
-                  levelBLabel.style.display = "block";
-                  levelB.style.display = "table";
-                  
-                break;
-                case "C":
-                  row = levelC.insertRow(levelCIndex);
-                  makeRowC(row);
-                  levelCLabel.style.display = "block";
-                  levelC.style.display = "table";
-                  
-                break;
-                case "D":
-                  row = levelD.insertRow(levelDIndex);
-                  makeRowD(row);
-                  levelDLabel.style.display = "block";
-                  levelD.style.display = "table";
-                  
-                break;
-              }
-            }
-
-        });
-
-        dateSnapshot.forEach(function(exerciseSnapshot){
-          var exerciseName = exerciseSnapshot.key;
-          var exerciseCount = exerciseSnapshot.val();
-          if(exerciseCount === true){
-              exerciseCount = "Yes";
-            }
-            else if(exerciseCount === false){
-              exerciseCount = "No";
-            }
-          var index = searchForTitle(exerciseName, level);
-          if(index === null){
-            
-          }
-          else{
-            row.deleteCell(index);
-            var exercisecell = row.insertCell(index);
-            exercisecell.innerHTML = exerciseCount;
-            if(exerciseName === "Fell?"){
-              if(exerciseCount === "Yes"){
-                exercisecell.style.backgroundColor = "#FF7C7C";
-              }
-              else if(exerciseCount === "No"){
-                exercisecell.style.backgroundColor = "#90FF7C";
-              }
-            }
-          }
-          
-        });
-        row.deleteCell(0);
-        var dateCell = row.insertCell(0);
-        dateCell.innerHTML = exerciseDate;
-      });
-
-      switch(level){
-                case "A":
-                  levelAIndex++;
-                break;
-                case "B":
-                  levelBIndex++;
-                break;
-                case "C":
-                  levelCIndex++;
-                break;
-                case "D":
-                  levelDIndex++;
-                break;
-              }
-    });
-
-  }
-
   function makeRowA(rowIndex){
     var newRow = levelA.insertRow(rowIndex);
     for (var i = 0; i<levelATitles.length; i++){
       var cell = newRow.insertCell(0);
-      console.log(i);
     }
     return newRow;
   }
@@ -308,7 +216,6 @@ function makeRowB(rowIndex){
     var newRow = levelB.insertRow(rowIndex);
     for (var i = 0; i<levelBTitles.length; i++){
       var cell = newRow.insertCell(0);
-      console.log(i);
     }
     return newRow;
   }
@@ -317,7 +224,6 @@ function makeRowC(rowIndex){
     var newRow = levelC.insertRow(rowIndex);
     for (var i = 0; i<levelCTitles.length; i++){
       var cell = newRow.insertCell(0);
-      console.log(i);
     }
     return newRow;
   }
@@ -326,7 +232,14 @@ function makeRowC(rowIndex){
     var newRow = levelD.insertRow(rowIndex);
     for (var i = 0; i<levelDTitles.length; i++){
       var cell = newRow.insertCell(0);
-      console.log(i);
+    }
+    return newRow;
+  }
+
+  function makeRowAdditional(rowIndex){
+    var newRow = additional.insertRow(rowIndex);
+    for (var i = 0; i<additionalTitles.length; i++){
+      var cell = newRow.insertCell(0);
     }
     return newRow;
   }
@@ -335,7 +248,6 @@ function makeRowC(rowIndex){
     exerciseRef.once('value', function(snapshot){
       snapshot.forEach(function(dates){
         var date = dates.key;
-        console.log(dates.key);
         var level;
         dates.forEach(function(levels){
           var key = levels.key;
@@ -348,20 +260,32 @@ function makeRowC(rowIndex){
         });
         if (level=="A"){
           var row = makeRowA(levelAIndex);
-          levelAIndex++;
+          var additionalItems = false;
           levelALabel.style.display = "block";
           levelA.style.display = "table";
-          console.log(levelAIndex);
 
 
           dates.forEach(function(exercises){
             var exerciseName = exercises.key;
-            var exerciseValue = exercises.val();
+            var exerciseValue
+            if(exercises.val()==="YES"){
+              exerciseValue = "Complete"
+            }
+            else if(exercises.val()==="NO"){
+              exerciseValue = "Incomplete";
+            }
 
             var titleIndex = searchForTitle(exerciseName, level);
-            console.log(exerciseName, titleIndex);
             if(titleIndex==null && exerciseName !="Level"){
-              console.log(exerciseName, "Not in Table");
+              if(!additionalItems){
+                var additionalRow = makeRowAdditional(additionalIndex);
+                additionalRow.deleteCell(0);
+                var additionalDate = additionalRow.insertCell(0);
+                additionalDate.innerHTML = date;
+                additionalItems = true;
+              }
+              
+              addAdditionalItem(exerciseName, exerciseValue, date);
             }
             else{
               row.deleteCell(titleIndex);
@@ -371,8 +295,11 @@ function makeRowC(rowIndex){
           });
           row.deleteCell(0);
             var dateCell = row.insertCell(0);
-            console.log(date);
             dateCell.innerHTML = date;
+            levelAIndex++;
+            if (additionalItems){
+              additionalIndex++;
+            }
         }
 
       });
@@ -383,7 +310,6 @@ function makeRowC(rowIndex){
     exerciseRef.once('value', function(snapshot){
       snapshot.forEach(function(dates){
         var date = dates.key;
-        console.log(dates.key);
         var level;
         dates.forEach(function(levels){
           var key = levels.key;
@@ -396,20 +322,32 @@ function makeRowC(rowIndex){
         });
         if (level=="B"){
           var row = makeRowB(levelBIndex);
-          levelBIndex++;
+          var additionalItems = false;
           levelBLabel.style.display = "block";
           levelB.style.display = "table";
-          console.log(levelBIndex);
 
 
           dates.forEach(function(exercises){
             var exerciseName = exercises.key;
-            var exerciseValue = exercises.val();
+            var exerciseValue
+            if(exercises.val()==="YES"){
+              exerciseValue = "Complete"
+            }
+            else if(exercises.val()==="NO"){
+              exerciseValue = "Incomplete";
+            }
 
             var titleIndex = searchForTitle(exerciseName, level);
-            console.log(exerciseName, titleIndex);
             if(titleIndex==null && exerciseName !="Level"){
-              console.log(exerciseName, "Not in Table");
+              if(!additionalItems){
+                var additionalRow = makeRowAdditional(additionalIndex);
+                additionalRow.deleteCell(0);
+                var additionalDate = additionalRow.insertCell(0);
+                additionalDate.innerHTML = date;
+                additionalItems = true;
+              }
+              
+              addAdditionalItem(exerciseName, exerciseValue, date);
             }
             else{
               row.deleteCell(titleIndex);
@@ -419,8 +357,11 @@ function makeRowC(rowIndex){
           });
           row.deleteCell(0);
             var dateCell = row.insertCell(0);
-            console.log(date);
             dateCell.innerHTML = date;
+            levelBIndex++;
+            if (additionalItems){
+              additionalIndex++;
+            }
         }
 
       });
@@ -431,7 +372,6 @@ function makeRowC(rowIndex){
     exerciseRef.once('value', function(snapshot){
       snapshot.forEach(function(dates){
         var date = dates.key;
-        console.log(dates.key);
         var level;
         dates.forEach(function(levels){
           var key = levels.key;
@@ -443,21 +383,33 @@ function makeRowC(rowIndex){
           }
         });
         if (level=="C"){
-          var row = makeRowC(levelCIndex);
-          levelCIndex++;
+          var row = makeRowC(levelAIndex);
+          var additionalItems = false;
           levelCLabel.style.display = "block";
           levelC.style.display = "table";
-          console.log(levelCIndex);
 
 
           dates.forEach(function(exercises){
             var exerciseName = exercises.key;
-            var exerciseValue = exercises.val();
+            var exerciseValue
+            if(exercises.val()==="YES"){
+              exerciseValue = "Complete"
+            }
+            else if(exercises.val()==="NO"){
+              exerciseValue = "Incomplete";
+            }
 
             var titleIndex = searchForTitle(exerciseName, level);
-            console.log(exerciseName, titleIndex);
             if(titleIndex==null && exerciseName !="Level"){
-              console.log(exerciseName, "Not in Table");
+              if(!additionalItems){
+                var additionalRow = makeRowAdditional(additionalIndex);
+                additionalRow.deleteCell(0);
+                var additionalDate = additionalRow.insertCell(0);
+                additionalDate.innerHTML = date;
+                additionalItems = true;
+              }
+              
+              addAdditionalItem(exerciseName, exerciseValue, date);
             }
             else{
               row.deleteCell(titleIndex);
@@ -467,8 +419,11 @@ function makeRowC(rowIndex){
           });
           row.deleteCell(0);
             var dateCell = row.insertCell(0);
-            console.log(date);
             dateCell.innerHTML = date;
+            levelCIndex++;
+            if (additionalItems){
+              additionalIndex++;
+            }
         }
 
       });
@@ -479,7 +434,6 @@ function makeRowC(rowIndex){
     exerciseRef.once('value', function(snapshot){
       snapshot.forEach(function(dates){
         var date = dates.key;
-        console.log(dates.key);
         var level;
         dates.forEach(function(levels){
           var key = levels.key;
@@ -491,21 +445,33 @@ function makeRowC(rowIndex){
           }
         });
         if (level=="D"){
-          var row = makeRowD(levelDIndex);
-          levelDIndex++;
+          var row = makeRowD(levelAIndex);
+          var additionalItems = false;
           levelDLabel.style.display = "block";
           levelD.style.display = "table";
-          console.log(levelDIndex);
 
 
           dates.forEach(function(exercises){
             var exerciseName = exercises.key;
-            var exerciseValue = exercises.val();
+            var exerciseValue
+            if(exercises.val()==="YES"){
+              exerciseValue = "Complete"
+            }
+            else if(exercises.val()==="NO"){
+              exerciseValue = "Incomplete";
+            }
 
             var titleIndex = searchForTitle(exerciseName, level);
-            console.log(exerciseName, titleIndex);
             if(titleIndex==null && exerciseName !="Level"){
-              console.log(exerciseName, "Not in Table");
+              if(!additionalItems){
+                var additionalRow = makeRowAdditional(additionalIndex);
+                additionalRow.deleteCell(0);
+                var additionalDate = additionalRow.insertCell(0);
+                additionalDate.innerHTML = date;
+                additionalItems = true;
+              }
+              
+              addAdditionalItem(exerciseName, exerciseValue, date);
             }
             else{
               row.deleteCell(titleIndex);
@@ -515,8 +481,11 @@ function makeRowC(rowIndex){
           });
           row.deleteCell(0);
             var dateCell = row.insertCell(0);
-            console.log(date);
             dateCell.innerHTML = date;
+            levelDIndex++;
+            if (additionalItems){
+              additionalIndex++;
+            }
         }
 
       });
