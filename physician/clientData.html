@@ -57,10 +57,10 @@ body {
 }
 
 #levelALabel, #levelBLabel, #levelCLabel, #levelDLabel, #uploadDataLabel{
-  display:none;
+  display:block;
 }
 table, th {
-    display:none;
+    display:table;
     table-layout: auto;
     width: 100%;
     border: 1px solid black;
@@ -147,6 +147,11 @@ td:hover {
       
     </table>
 <br>
+<label id = "additionalExercises" for="levelD"><b>Additional Exercises:</b></label>
+    <table id = "additionalExercises" style= "width=100%" >
+      
+    </table>
+<br>
 <label id = "uploadDataLabel" for="uploadData"><b>Uploaded Data:</b></label>
     <table id = "uploadData" style= "width=100%" >
       
@@ -158,7 +163,7 @@ td:hover {
 
   var levelBTitles = ["Date", "Knee Extensors", "Knee Flexors", "Hip Abductors", "Knee Bends", "Backwards Walking", "Walking and Turning Around", "Sideways Walking", "Tandem Stance", "One Leg Stand", "Sit to Stand", "Stair Walking", "Fell?"];
 
-  var levelCTitles = ["Date", "Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors", "Knee Bends",  "Walking and Turning Around", "Sideways Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Sit to Stand", "Stair Walking", "Fell?"];
+  var levelCTitles = ["Date", "Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantar Flexors", "Ankle Dorsiflexors", "Knee Bends",  "Walking and Turning Around", "Sideways Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Sit to Stand", "Stair Walking", "Fell?"];
 
   var levelDTitles = ["Date", "Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors", "Knee Bends", "Backwards Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Heel to Toe Walking Backwards", "Sit to Stand", "Stair Walking", "Fell?"];
 
@@ -179,8 +184,11 @@ td:hover {
   var userRef = database.ref(user);
   var exerciseRef = database.ref(user + "/exercises");
 
-  var row = levelA.insertRow(0);
-  var cell = row.insertCell(0);
+  var rowA = levelA.insertRow(0);
+  var rowB = levelA.insertRow(0);
+  var rowC = levelA.insertRow(0);
+  var rowD = levelA.insertRow(0);
+  //var cell = row.insertCell(0);
   
   displayTopInfo();
 
@@ -192,13 +200,17 @@ td:hover {
 
   displayTitles(levelDTitles, levelD);
 
-  sortExercises();
+  displayAExercises();
+
+  displayBExercises();
+
+  displayCExercises();
+
+  displayDExercises();
 
   getUploads();
-  
-  
-  
-  
+
+
   
   
 </script>

@@ -295,40 +295,244 @@ function displayTopInfo(){
 
   }
 
-  function makeRowA(row){
+  function makeRowA(rowIndex){
+    var newRow = levelA.insertRow(rowIndex);
     for (var i = 0; i<levelATitles.length; i++){
-      var cell = row.insertCell(0);
+      var cell = newRow.insertCell(0);
+      console.log(i);
     }
+    return newRow;
   }
 
-  function makeRowB(rowIndex){
+function makeRowB(rowIndex){
+    var newRow = levelB.insertRow(rowIndex);
     for (var i = 0; i<levelBTitles.length; i++){
-      var row = levelB.insertRow(rowIndex);
-      var cell = row.insertCell(0);
+      var cell = newRow.insertCell(0);
+      console.log(i);
     }
+    return newRow;
   }
 
-  function makeRowC(rowIndex){
+function makeRowC(rowIndex){
+    var newRow = levelC.insertRow(rowIndex);
     for (var i = 0; i<levelCTitles.length; i++){
-      var row = levelC.insertRow(rowIndex);
-      var cell = row.insertCell(0);
+      var cell = newRow.insertCell(0);
+      console.log(i);
     }
+    return newRow;
   }
 
   function makeRowD(rowIndex){
+    var newRow = levelD.insertRow(rowIndex);
     for (var i = 0; i<levelDTitles.length; i++){
-      var row = levelD.insertRow(rowIndex);
-      var cell = row.insertCell(0);
+      var cell = newRow.insertCell(0);
+      console.log(i);
     }
+    return newRow;
   }
+
+  function displayAExercises(){
+    exerciseRef.once('value', function(snapshot){
+      snapshot.forEach(function(dates){
+        var date = dates.key;
+        console.log(dates.key);
+        var level;
+        dates.forEach(function(levels){
+          var key = levels.key;
+          var value = levels.val();
+          //console.log(key);
+          if(key == "Level"){
+            level = value;
+            //console.log("Level", level);
+          }
+        });
+        if (level=="A"){
+          var row = makeRowA(levelAIndex);
+          levelAIndex++;
+          levelALabel.style.display = "block";
+          levelA.style.display = "table";
+          console.log(levelAIndex);
+
+
+          dates.forEach(function(exercises){
+            var exerciseName = exercises.key;
+            var exerciseValue = exercises.val();
+
+            var titleIndex = searchForTitle(exerciseName, level);
+            console.log(exerciseName, titleIndex);
+            if(titleIndex==null && exerciseName !="Level"){
+              console.log(exerciseName, "Not in Table");
+            }
+            else{
+              row.deleteCell(titleIndex);
+              var exercisecell = row.insertCell(titleIndex);
+              exercisecell.innerHTML = exerciseValue;
+            }
+          });
+          row.deleteCell(0);
+            var dateCell = row.insertCell(0);
+            console.log(date);
+            dateCell.innerHTML = date;
+        }
+
+      });
+    });
+  }
+  
+  function displayBExercises(){
+    exerciseRef.once('value', function(snapshot){
+      snapshot.forEach(function(dates){
+        var date = dates.key;
+        console.log(dates.key);
+        var level;
+        dates.forEach(function(levels){
+          var key = levels.key;
+          var value = levels.val();
+          //console.log(key);
+          if(key == "Level"){
+            level = value;
+            //console.log("Level", level);
+          }
+        });
+        if (level=="B"){
+          var row = makeRowB(levelBIndex);
+          levelBIndex++;
+          levelBLabel.style.display = "block";
+          levelB.style.display = "table";
+          console.log(levelBIndex);
+
+
+          dates.forEach(function(exercises){
+            var exerciseName = exercises.key;
+            var exerciseValue = exercises.val();
+
+            var titleIndex = searchForTitle(exerciseName, level);
+            console.log(exerciseName, titleIndex);
+            if(titleIndex==null && exerciseName !="Level"){
+              console.log(exerciseName, "Not in Table");
+            }
+            else{
+              row.deleteCell(titleIndex);
+              var exercisecell = row.insertCell(titleIndex);
+              exercisecell.innerHTML = exerciseValue;
+            }
+          });
+          row.deleteCell(0);
+            var dateCell = row.insertCell(0);
+            console.log(date);
+            dateCell.innerHTML = date;
+        }
+
+      });
+    });
+  }
+
+  function displayCExercises(){
+    exerciseRef.once('value', function(snapshot){
+      snapshot.forEach(function(dates){
+        var date = dates.key;
+        console.log(dates.key);
+        var level;
+        dates.forEach(function(levels){
+          var key = levels.key;
+          var value = levels.val();
+          //console.log(key);
+          if(key == "Level"){
+            level = value;
+            //console.log("Level", level);
+          }
+        });
+        if (level=="C"){
+          var row = makeRowC(levelCIndex);
+          levelCIndex++;
+          levelCLabel.style.display = "block";
+          levelC.style.display = "table";
+          console.log(levelCIndex);
+
+
+          dates.forEach(function(exercises){
+            var exerciseName = exercises.key;
+            var exerciseValue = exercises.val();
+
+            var titleIndex = searchForTitle(exerciseName, level);
+            console.log(exerciseName, titleIndex);
+            if(titleIndex==null && exerciseName !="Level"){
+              console.log(exerciseName, "Not in Table");
+            }
+            else{
+              row.deleteCell(titleIndex);
+              var exercisecell = row.insertCell(titleIndex);
+              exercisecell.innerHTML = exerciseValue;
+            }
+          });
+          row.deleteCell(0);
+            var dateCell = row.insertCell(0);
+            console.log(date);
+            dateCell.innerHTML = date;
+        }
+
+      });
+    });
+  }
+
+  function displayDExercises(){
+    exerciseRef.once('value', function(snapshot){
+      snapshot.forEach(function(dates){
+        var date = dates.key;
+        console.log(dates.key);
+        var level;
+        dates.forEach(function(levels){
+          var key = levels.key;
+          var value = levels.val();
+          //console.log(key);
+          if(key == "Level"){
+            level = value;
+            //console.log("Level", level);
+          }
+        });
+        if (level=="D"){
+          var row = makeRowD(levelDIndex);
+          levelDIndex++;
+          levelDLabel.style.display = "block";
+          levelD.style.display = "table";
+          console.log(levelDIndex);
+
+
+          dates.forEach(function(exercises){
+            var exerciseName = exercises.key;
+            var exerciseValue = exercises.val();
+
+            var titleIndex = searchForTitle(exerciseName, level);
+            console.log(exerciseName, titleIndex);
+            if(titleIndex==null && exerciseName !="Level"){
+              console.log(exerciseName, "Not in Table");
+            }
+            else{
+              row.deleteCell(titleIndex);
+              var exercisecell = row.insertCell(titleIndex);
+              exercisecell.innerHTML = exerciseValue;
+            }
+          });
+          row.deleteCell(0);
+            var dateCell = row.insertCell(0);
+            console.log(date);
+            dateCell.innerHTML = date;
+        }
+
+      });
+    });
+  }
+
 
     function getUploads(){
     displayTitles(["Date Last Modified:", "View Contents", "Download File:"], uploads);
     var rowIndex = 1;
+
     database.ref(user+"/dataUploads").once('value', function(snapshot){
       snapshot.forEach(function(childSnapshot){
         var childKey = childSnapshot.key;
         var childValue = childSnapshot.val();
+
         if(childKey!=null){
           uploadData.style.display = "table";
           uploadDataLabel.style.display = "flex";
