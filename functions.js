@@ -571,3 +571,38 @@ function makeRowC(rowIndex){
     }
   }
 
+
+  function addAdditionalItem(key, value, date){
+  additionalLabel.style.display = "block";
+          additionalExercises.style.display = "table";
+  var titleIndex = searchForTitle(key, "add");
+  if(titleIndex==null){
+    additionalTitles.push(key);
+    addTitleColumn(additional, additionalTitles, additionalIndex);
+    titleIndex = searchForTitle(key, "add");
+    var row = additional.rows[additionalIndex];
+    row.cells[titleIndex].innerHTML = value;
+  }
+  else{
+    var row = additional.rows[additionalIndex];
+    row.cells[titleIndex].innerHTML = value;
+  }
+
+}
+
+function addTitleColumn(table, titles, rowIndex){
+  var titleRow = table.rows[0];
+  var newTitle = titleRow.insertCell(titles.length-1);
+  newTitle.innerHTML = titles[titles.length-1];
+  
+  for(var i=1; i<rowIndex+1; i++){
+    var row = table.rows[i];
+    for(var j=row.cells.length; j<titles.length;j++){
+      console.log(titles[titles.length-1], i, j);
+      var newCell = row.insertCell(j);
+    }
+    
+  }
+
+
+}

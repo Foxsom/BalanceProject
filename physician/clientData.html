@@ -239,7 +239,7 @@ function addTitleColumn(table, titles, rowIndex){
   var titleRow = table.rows[0];
   var newTitle = titleRow.insertCell(titles.length-1);
   newTitle.innerHTML = titles[titles.length-1];
-  try{
+  
   for(var i=1; i<rowIndex+1; i++){
     var row = table.rows[i];
     for(var j=row.cells.length; j<titles.length;j++){
@@ -248,9 +248,7 @@ function addTitleColumn(table, titles, rowIndex){
     }
     
   }
-}
-catch{
-}
+
 
 }
 

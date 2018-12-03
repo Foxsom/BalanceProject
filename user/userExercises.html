@@ -121,7 +121,13 @@ tr:hover {
     <table id = "levelC" style= "width=100%" >
       
     </table>
+    <br>
+<label id = "additionalLabel" for="additionalExercises"><b>Additional Exercises:</b></label>
+    <table id = "additionalExercises" style= "width=100%" >
+      
+    </table>
 <br>
+
 <label id = "levelDLabel" for="levelD"><b>Level D Submissions:</b></label>
     <table id = "levelD" style= "width=100%" >
       
@@ -140,17 +146,20 @@ tr:hover {
 
   var levelDTitles = ["Date", "Knee extensor", "Knee Flexor", "Hip Abductor", "Ankle Plantarflexors", "Ankle Dorsiflexors", "Knee Bends", "Backwards Walking", "Tandem Walk", "One Leg Stand", "Heel Walking", "Toe Walk", "Heel to Toe Walking Backwards", "Sit to Stand", "Stair Walking", "Fell?"];
 
+  var additionalTitles = ["Date"];
   
   var promises = [];
   var levelA = document.getElementById("levelA");
   var levelB = document.getElementById("levelB");
   var levelC = document.getElementById("levelC");
   var levelD = document.getElementById("levelD");
+  var additional = document.getElementById("additionalExercises");
 
   var levelAIndex = 1;
   var levelBIndex = 1;
   var levelCIndex = 1;
   var levelDIndex = 1;
+  var additionalIndex = 1;
 
   var user = localStorage.getItem("currentUser");
   var userRef = database.ref(user);
@@ -162,6 +171,7 @@ tr:hover {
   displayTitles(levelBTitles, levelB);
   displayTitles(levelCTitles, levelC);
   displayTitles(levelDTitles, levelD);
+  displayTitles(additionalTitles, additional);
   displayAExercises();
   displayBExercises();
   displayCExercises();
