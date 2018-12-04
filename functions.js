@@ -167,6 +167,8 @@ function displayTopInfo(){
     for (var i = 0; i<titles.length; i++){
       var cell = titleRow.insertCell(i);
       cell.innerHTML = titles[i];
+      cell.style.backgroundColor = "#4CAF50";
+      cell.style.color = "WHITE";
     }
 
   }
@@ -594,6 +596,8 @@ function addTitleColumn(table, titles, rowIndex){
   var titleRow = table.rows[0];
   var newTitle = titleRow.insertCell(titles.length-1);
   newTitle.innerHTML = titles[titles.length-1];
+  newTitle.style.backgroundColor = "#4CAF50";
+  newTitle.style.color = "WHITE";
   
   for(var i=1; i<rowIndex+1; i++){
     var row = table.rows[i];
