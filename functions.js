@@ -529,6 +529,13 @@ function makeRowC(rowIndex){
         downloadbtn.onclick = function() {downloadFile(childValue)};
         downloadCell.appendChild(downloadbtn);
 
+        var viewGraphbtn = document.createElement('input');
+        viewGraphbtn.type = "button";
+        viewGraphbtn.className = "viewGraphbtn";
+        viewGraphbtn.value = "View Graph";
+        viewGraphbtn.onclick = function() {viewGraph(childValue, childKey)};
+        contentsCell.appendChild(viewGraphbtn);
+
         var content = document.getElementById("content");
 
 
@@ -543,6 +550,16 @@ function makeRowC(rowIndex){
       localStorage.setItem("url", url);
       localStorage.setItem("date", date);
       window.open("viewUpload.html", "_self");
+
+    });
+  }
+  function viewGraph(link, date){
+    var storageRef = firebase.storage().ref(link);
+    storageRef.getDownloadURL().then(function(url){
+      console.log(url);
+      localStorage.setItem("url", url);
+      localStorage.setItem("date", date);
+      window.open("viewGraph.html", "_self");
 
     });
   }
