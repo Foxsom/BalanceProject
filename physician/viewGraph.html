@@ -159,7 +159,6 @@ tr:hover {
             gyrox.push(x);
             gyroy.push(y);
             gyroz.push(z);
-            console.log(x, y, z);
             gyroXAverage = gyroXAverage + parseInt(x);
             gyroYAverage = gyroYAverage + parseInt(y);
             gyroZAverage = gyroZAverage + parseInt(z);
@@ -168,14 +167,12 @@ tr:hover {
             gyroyLoc.push(gyroYAverage);
             gyrozLoc.push(gyroZAverage);
 
-            console.log(gyroXAverage, gyroYAverage, gyroZAverage);
           }
-          console.log(j);
           gyroXAverage = gyroXAverage/(j);
           gyroYAverage = gyroYAverage/(j);
           gyroZAverage = gyroZAverage/(j);
 
-          console.log(gyroXAverage, gyroYAverage, gyroZAverage);
+
           var data1 = [
           {
             x: gyrox,
