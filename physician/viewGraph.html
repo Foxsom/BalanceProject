@@ -177,20 +177,22 @@ tr:hover {
           {
             x: gyrox,
             y: times,
-            colorscale: 'Hot',
-            type: 'scatter'
+            //colorscale: 'Hot',
+            //type: 'histogram2dcontour'
           }
         ];
         var data2 = [
           {
-            x: times,
+            x: gyrox,
             y: gyroy,
-            colorscale: 'Hot',
-            type: 'scatter'
+            //colorscale: 'Hot',
+            type: 'histogram2dcontour'
           }
         ];
-        Plotly.newPlot('graph1', data1);
+
+        Plotly.newPlot('graph1', data1, null, {responsive: true});
         Plotly.newPlot('graph2', data2);
+
 
         }
     });
