@@ -528,14 +528,7 @@ function makeRowC(rowIndex){
         downloadbtn.value = "Download";
         downloadbtn.onclick = function() {downloadFile(childValue)};
         downloadCell.appendChild(downloadbtn);
-
-        var viewGraphbtn = document.createElement('input');
-        viewGraphbtn.type = "button";
-        viewGraphbtn.className = "viewGraphbtn";
-        viewGraphbtn.value = "View Graph";
-        viewGraphbtn.onclick = function() {viewGraph(childValue, childKey)};
-        contentsCell.appendChild(viewGraphbtn);
-
+        
         var content = document.getElementById("content");
 
 
