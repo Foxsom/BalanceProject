@@ -260,13 +260,13 @@ tr:hover {
             gyroyLoc.push(gyroYAverage/10);
             gyrozLoc.push(gyroZAverage/10);
 
-            accelxLoc.push(accelx);
-            accelyLoc.push(accely);
-            accelzLoc.push(accelz);
+            accelxLoc.push(currentLocation[0]);
+            accelyLoc.push(currentLocation[1]);
+            accelzLoc.push(currentLocation[2]);
 
-            currentLocation[0] = currentLocation[0] + (accelx/10);
-            currentLocation[1] = currentLocation[1] + (accely/10);
-            currentLocation[2] = currentLocation[2] + (accelz/10);
+            currentLocation[0] = currentLocation[0] + ((accelx*.01)/16384);
+            currentLocation[1] = currentLocation[1] + ((accely*.01)/16384);
+            currentLocation[2] = currentLocation[2] + ((accelz*.01)/16384);
 
 
 
