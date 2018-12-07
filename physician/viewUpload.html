@@ -235,16 +235,16 @@ tr:hover {
           var currentLocation = [0, 0, 0];
 
           //Puts variables in a table.
-          for(var i=3; i<rows;i++){
+          for(var i=1; i<rows;i++){
             j++;
             var time = Papa.parse(data).data[i][0];
             var x = Papa.parse(data).data[i][1];
-            var y = Papa.parse(data).data[i][2];
+            var y = Papa.parse(data).data[i][0];
             var z = Papa.parse(data).data[i][3];
 
-            var accelx = Papa.parse(data).data[i][4];
-            var accely = Papa.parse(data).data[i][5];
-            var accelz = Papa.parse(data).data[i][6];
+            var accelx = Papa.parse(data).data[i][5];
+            var accely = Papa.parse(data).data[i][6];
+            var accelz = Papa.parse(data).data[i][7];
 
            
             times.push(time);
@@ -260,9 +260,9 @@ tr:hover {
             gyroyLoc.push(gyroYAverage/10);
             gyrozLoc.push(gyroZAverage/10);
 
-            accelxLoc.push(currentLocation[0]);
-            accelyLoc.push(currentLocation[1]);
-            accelzLoc.push(currentLocation[2]);
+            accelxLoc.push(accelx);
+            accelyLoc.push(accely);
+            accelzLoc.push(accelz);
 
             currentLocation[0] = currentLocation[0] + (accelx/10);
             currentLocation[1] = currentLocation[1] + (accely/10);
@@ -279,15 +279,15 @@ tr:hover {
           var data1 = [
           {
             x: gyrox,
-            y: times,
+            y: gyroy,
             //colorscale: 'Hot',
             //type: 'histogram2dcontour'
           }
         ];
         var data2 = [
           {
-            x: gyroxLoc,
-            y: gyroyLoc,
+            x: gyrox,
+            y: gyroy,
             //colorscale: 'Hot',
             type: 'histogram2dcontour'
           }
@@ -304,7 +304,7 @@ tr:hover {
           }
         ];
 
-        Plotly.newPlot('graph1', data1);
+        //Plotly.newPlot('graph1', data1);
         Plotly.newPlot('graph2', data2);
         Plotly.newPlot('graph3', data3);
         }
