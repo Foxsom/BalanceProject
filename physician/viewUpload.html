@@ -161,9 +161,10 @@ tr:hover {
 
 <div id="graphs" class="tabcontent">
   <h3>Graphs</h3>
-
+  <p id = "loading2">Loading Data...</p>
   <div id="graph1"></div>
   <div id="graph2"></div>
+  <div id="graph3"></div>
   
 </div>
 
@@ -197,10 +198,15 @@ tr:hover {
   var gyroy = [];
   var gyroz = [];
 
+  var accelxLoc = [];
+  var accelyLoc = [];
+  var accelzLoc = [];
+
 
   var gyroXAverage = 0;
   var gyroYAverage = 0;
   var gyroZAverage = 0;
+
 
   var dataTable = document.getElementById("rawReadings");
 
@@ -213,6 +219,7 @@ tr:hover {
       });
     });
     loading.innerHTML = "";
+    loading2.innerHTML = "";
 
   }
 
@@ -225,24 +232,43 @@ tr:hover {
           var rows = Papa.parse(data).data.length;
           var j = 0;
           arrayToTable(Papa.parse(data).data);
+          var currentLocation = [0, 0, 0];
 
+          //Puts variables in a table.
           for(var i=3; i<rows;i++){
             j++;
             var time = Papa.parse(data).data[i][0];
             var x = Papa.parse(data).data[i][1];
             var y = Papa.parse(data).data[i][2];
             var z = Papa.parse(data).data[i][3];
+
+            var accelx = Papa.parse(data).data[i][4];
+            var accely = Papa.parse(data).data[i][5];
+            var accelz = Papa.parse(data).data[i][6];
+
+           
             times.push(time);
             gyrox.push(x);
             gyroy.push(y);
             gyroz.push(z);
+            console.log()
             gyroXAverage = gyroXAverage + parseInt(x);
             gyroYAverage = gyroYAverage + parseInt(y);
             gyroZAverage = gyroZAverage + parseInt(z);
 
-            gyroxLoc.push(gyroXAverage);
-            gyroyLoc.push(gyroYAverage);
-            gyrozLoc.push(gyroZAverage);
+            gyroxLoc.push(gyroXAverage/10);
+            gyroyLoc.push(gyroYAverage/10);
+            gyrozLoc.push(gyroZAverage/10);
+
+            accelxLoc.push(currentLocation[0]);
+            accelyLoc.push(currentLocation[1]);
+            accelzLoc.push(currentLocation[2]);
+
+            currentLocation[0] = currentLocation[0] + (accelx/10);
+            currentLocation[1] = currentLocation[1] + (accely/10);
+            currentLocation[2] = currentLocation[2] + (accelz/10);
+
+
 
           }
           gyroXAverage = gyroXAverage/(j);
@@ -260,21 +286,34 @@ tr:hover {
         ];
         var data2 = [
           {
-            x: gyrox,
-            y: gyroy,
+            x: gyroxLoc,
+            y: gyroyLoc,
             //colorscale: 'Hot',
             type: 'histogram2dcontour'
           }
         ];
 
-        Plotly.newPlot('graph1', data1, null, {responsive: true});
+        var data3 = [
+          {
+            x: accelxLoc,
+            y: accelyLoc,
+            z: accelzLoc,
+            //colorscale: 'Hot',
+            type: 'scatter3d',
+            mode: 'lines',
+          }
+        ];
+
+        Plotly.newPlot('graph1', data1);
         Plotly.newPlot('graph2', data2);
+        Plotly.newPlot('graph3', data3);
         }
+
     });
 
 
 //Used for opening specific tabs
-function openData(evt, cityName) {
+function openData(evt, dataSelected) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -284,7 +323,7 @@ function openData(evt, cityName) {
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-    document.getElementById(cityName).style.display = "block";
+    document.getElementById(dataSelected).style.display = "block";
     evt.currentTarget.className += " active";
 }
 

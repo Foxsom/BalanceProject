@@ -77,6 +77,10 @@ td{
 }
 tr:hover {background-color: #f5f5f5;}
 
+#Clients {
+  display: none;
+}
+
 
 </style>
 
@@ -102,9 +106,10 @@ tr:hover {background-color: #f5f5f5;}
     <a href='../index.html' onclick="signOut()" >Logout</a>
   </div>
 </div>
-
+<p id = "loading">Loading Clients...</p>
 <div id=content >
     <table id = "Clients" style= "width=100%" >
+
       
     </table>
 	</div>
@@ -230,11 +235,15 @@ tr:hover {background-color: #f5f5f5;}
     });
 
     
-
+  var loading = document.getElementById("loading");
+  loading.innerHTML = "";
+  table.style.display = "table";
     
 
     
   }
+
+  
 </script>
 
 

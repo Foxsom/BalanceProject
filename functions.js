@@ -254,10 +254,10 @@ function makeRowC(rowIndex){
         dates.forEach(function(levels){
           var key = levels.key;
           var value = levels.val();
-          //console.log(key);
+
           if(key == "Level"){
             level = value;
-            //console.log("Level", level);
+
           }
         });
         if (level=="A"){
@@ -528,8 +528,11 @@ function makeRowC(rowIndex){
         downloadbtn.value = "Download";
         downloadbtn.onclick = function() {downloadFile(childValue)};
         downloadCell.appendChild(downloadbtn);
-        
+
         var content = document.getElementById("content");
+        content.style.display = "block";
+        var loading = document.getElementById("loading");
+        loading.innerHTML = "";
 
 
       });
@@ -539,41 +542,27 @@ function makeRowC(rowIndex){
   function viewFile(link, date){
     var storageRef = firebase.storage().ref(link);
     storageRef.getDownloadURL().then(function(url){
-      console.log(url);
       localStorage.setItem("url", url);
       localStorage.setItem("date", date);
       window.open("viewUpload.html", "_self");
 
     });
   }
-  function viewGraph(link, date){
-    var storageRef = firebase.storage().ref(link);
-    storageRef.getDownloadURL().then(function(url){
-      console.log(url);
-      localStorage.setItem("url", url);
-      localStorage.setItem("date", date);
-      window.open("viewGraph.html", "_self");
-
-    });
-  }
 
   function downloadFile(link){
-    //console.log(link);
     var storageRef = firebase.storage().ref(link);
     storageRef.getDownloadURL().then(function(url){
-      console.log(url);
+
       window.open(url, "_self");
     });
 
   }
 
   function storeDatabaseItem(path, name){
-    console.log(path);
     var item = localStorage.getItem(path);
     if(item ===null){
       database.ref(path).once('value').then(function(snapshot){
         item = snapshot.val();
-        console.log(item);
         localStorage.setItem(name, item);
         return snapshot.val();
       });
@@ -612,7 +601,6 @@ function addTitleColumn(table, titles, rowIndex){
   for(var i=1; i<rowIndex+1; i++){
     var row = table.rows[i];
     for(var j=row.cells.length; j<titles.length;j++){
-      console.log(titles[titles.length-1], i, j);
       var newCell = row.insertCell(j);
     }
     
