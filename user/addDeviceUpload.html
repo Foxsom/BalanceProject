@@ -116,17 +116,18 @@ body {
       //Get File
         file = e.target.files[0];
       //Get Storage Ref
-        date = moment().format("YYYY-MM-DD|HH:mm");
-        //date = date.toString();
-        console.log(date);
-        storageRef = firebase.storage().ref(user+'/'+date+'.csv');
+        
 
 
     });
 
 
   function uploadCSV(){
-    uploader.style.display = "block";
+    date = moment().format("YYYY-MM-DD|HH:mm");
+        //date = date.toString();
+        console.log(date);
+        storageRef = firebase.storage().ref(user+'/'+date+'.csv');
+    
     var task = storageRef.put(file);
     task.on('state_changed',
       function progress(snapshot){
@@ -135,7 +136,7 @@ body {
       },
 
       function complete(){
-        
+        uploader.style.display = "none";
       }
       );
     database.ref(user +'/dataUploads').child(date).set(user+'/'+date+'.csv');
