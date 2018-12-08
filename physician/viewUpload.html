@@ -237,6 +237,7 @@ tr:hover {
           var currentLocation = [0, 0, 0];
 
           //Puts variables in a table.
+
           for(var i=20; i<rows;i++){
             j++;
             var time = Papa.parse(data).data[i][0];
@@ -244,9 +245,9 @@ tr:hover {
             var y = Papa.parse(data).data[i][0];
             var z = Papa.parse(data).data[i][3];
 
-            var accelx = Papa.parse(data).data[i][5];
-            var accely = Papa.parse(data).data[i][6];
-            var accelz = Papa.parse(data).data[i][7];
+            var accelx = (Papa.parse(data).data[i][5]);
+            var accely = (Papa.parse(data).data[i][6]);
+            var accelz = (Papa.parse(data).data[i][7]);
 
            
             times.push(time);
@@ -266,9 +267,9 @@ tr:hover {
             accelyLoc.push(currentLocation[1]);
             accelzLoc.push(currentLocation[2]);
 
-            currentLocation[0] = currentLocation[0] + ((accelx*.01)/16384);
-            currentLocation[1] = currentLocation[1] + ((accely*.01)/16384);
-            currentLocation[2] = currentLocation[2] + ((accelz*.01)/16384);
+            currentLocation[0] = currentLocation[0] + ((accelx*.098)/16384);
+            currentLocation[1] = currentLocation[1] + ((accely*.098)/16384);
+            currentLocation[2] = currentLocation[2] + ((accelz*.098)/16384);
 
 
 
