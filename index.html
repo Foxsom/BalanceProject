@@ -179,7 +179,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     physRef.once('value').then(function(snapshot){
             var isPhysician = snapshot.val();
             if(isPhysician==true){
-                window.open("physician/physicianHome.html", "_self");
+                window.open("physician/currentClients.html", "_self");
             }
             else if(isPhysician==false){
                 storeDatabaseItem(uid +"/clinician", "physID");
