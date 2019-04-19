@@ -185,6 +185,10 @@ tr:hover {
   var data;
   
   var times = [];
+
+  var pitches = [];
+  var rolls = [];
+/*
   var gyrox = [];
   var gyroy = [];
   var gyroz = [];
@@ -207,7 +211,7 @@ tr:hover {
   var gyroZAverage = 0;
 
   var pitches = [];
-
+*/
 
   var dataTable = document.getElementById("rawReadings");
 
@@ -219,6 +223,7 @@ tr:hover {
         newCell.innerHTML = cell;
       });
     });
+
     loading.innerHTML = "";
     loading2.innerHTML = "";
 
@@ -239,29 +244,38 @@ tr:hover {
 
           for(var i=20; i<rows;i++){
             j++;
-            var time = Papa.parse(data).data[i][0];
+            //var time = Papa.parse(data).data[i][0];
+            /*
             var x = Papa.parse(data).data[i][0];
             var y = Papa.parse(data).data[i][1];
-            var z = Papa.parse(data).data[i][3];
+            var z = Papa.parse(data).data[i][2];
+*/
 
+            var pitch = Papa.parse(data).data[i][1];
+            var roll = Papa.parse(data).data[i][0];
+/*
             var accelx = (Papa.parse(data).data[i][5]);
             var accely = (Papa.parse(data).data[i][6]);
             var accelz = (Papa.parse(data).data[i][7]);
-
+*/
            
-            times.push(time);
-            gyrox.push(x);
-            gyroy.push(y);
-            gyroz.push(z);
-            console.log()
-            gyroXAverage = gyroXAverage + parseInt(x);
-            gyroYAverage = gyroYAverage + parseInt(y);
-            gyroZAverage = gyroZAverage + parseInt(z);
+            //times.push(time);
+            pitches.push(pitch);
+            rolls.push(roll);
 
+            //gyrox.push(x);
+            //gyroy.push(y);
+            //gyroz.push(z);
+            //console.log()
+            //gyroXAverage = gyroXAverage + parseInt(x);
+            //gyroYAverage = gyroYAverage + parseInt(y);
+            //gyroZAverage = gyroZAverage + parseInt(z);
+/*
             gyroxLoc.push(gyroXAverage/10);
             gyroyLoc.push(gyroYAverage/10);
             gyrozLoc.push(gyroZAverage/10);
-
+*/
+/*
             accelxLoc.push(currentLocation[0]);
             accelyLoc.push(currentLocation[1]);
             accelzLoc.push(currentLocation[2]);
@@ -269,32 +283,32 @@ tr:hover {
             currentLocation[0] = currentLocation[0] + ((accelx*.098)/16384);
             currentLocation[1] = currentLocation[1] + ((accely*.098)/16384);
             currentLocation[2] = currentLocation[2] + ((accelz*.098)/16384);
-
+*/
 
 
           }
-          gyroXAverage = gyroXAverage/(j);
-          gyroYAverage = gyroYAverage/(j);
-          gyroZAverage = gyroZAverage/(j);
+  //        gyroXAverage = gyroXAverage/(j);
+    //      gyroYAverage = gyroYAverage/(j);
+      //    gyroZAverage = gyroZAverage/(j);
 
 
           var data1 = [
           {
-            x: gyrox,
-            y: gyroy,
+            x: pitches,
+            y: rolls,
             //colorscale: 'Hot',
             //type: 'histogram2dcontour'
           }
         ];
         var data2 = [
           {
-            x: gyrox,
-            y: gyroy,
+            x: rolls,
+            y: pitches,
             //colorscale: 'Hot',
             type: 'histogram2dcontour'
           }
         ];
-
+/*
         var data3 = [
           {
             x: accelxLoc,
@@ -305,8 +319,27 @@ tr:hover {
             mode: 'lines',
           }
         ];
-
+*/
         var layout1 = {
+          autosize: false,
+  width: 500,
+  height: 500,
+
+
+  images: [
+    {
+      x: 5,
+      y: 5,
+      sizex: .5,
+      sizey: .5,
+      source: "https://upload.wikimedia.org/wikipedia/commons/a/a0/Circle_-_black_simple.svg",
+      xanchor: "center",
+      xref: "paper",
+      yanchor: "center",
+      yref: "paper"
+    }
+  ],
+
   title: 'Roll vs Pitch',
   xaxis: {
     title: 'Roll (Degrees)',
@@ -327,13 +360,18 @@ tr:hover {
 };
 
         var layout2 = {
+
   title: 'Device Location',
+  autosize: false,
+  width: 500,
+  height: 500,
   xaxis: {
     title: 'x (m)',
     titlefont: {
       family: 'Courier New, monospace',
       size: 18,
-      color: '#7f7f7f'
+      color: '#7f7f7f',
+
     }
   },
   yaxis: {
@@ -358,7 +396,7 @@ tr:hover {
 
         //Plotly.newPlot('graph1', data1);
         Plotly.newPlot('graph2', data2, layout1);
-        Plotly.newPlot('graph3', data3, layout2);
+        //Plotly.newPlot('graph3', data3, layout2);
         }
 
     });
