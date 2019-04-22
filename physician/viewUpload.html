@@ -142,6 +142,7 @@ tr:hover {
   var storage = firebase.storage();
   getRefs();
   var user = getUser();
+  var fell = false;
 
 </script>
 <div class="topnav" id = "navbar">
@@ -161,6 +162,7 @@ tr:hover {
 <div id="graphs" class="tabcontent">
   <h3>Graphs</h3>
   <p id = "loading2">Loading Data...</p>
+  <p id = "fallDetected">Fall was detected</p>
   <div id="graph1"></div>
   <div id="graph2"></div>
   <div id="graph3"></div>
@@ -181,9 +183,10 @@ tr:hover {
   var elem = document.getElementById("loading");
   var sizeLabel = document.getElementById("sizeLabel");
   var url = localStorage.getItem("url");
+  var fallVar = document.getElementById ("fallDetected");
   var size;
   var data;
-  
+  fallVar.style.display = "none";
   var times = [];
 
   var pitches = [];
@@ -262,7 +265,10 @@ tr:hover {
             //times.push(time);
             pitches.push(pitch);
             rolls.push(roll);
-
+            if(Papa.parse(data).data[i][5]==1){
+              fell = true;
+              fallVar.style.display = "block";
+            }
             //gyrox.push(x);
             //gyroy.push(y);
             //gyroz.push(z);
@@ -326,13 +332,14 @@ tr:hover {
   height: 500,
 
 
+
   images: [
     {
       x: 0,
       y: 0,
-      sizex: .5,
-      sizey: .5,
-      source: "personOutline.png",
+      sizex: .25,
+      sizey: .25,
+      source: "https://github.com/Foxsom/foxsom.github.io/blob/master/physician/personOutline.png?raw=trueg",
       xanchor: "left",
       xref: "paper",
       yanchor: "bottom",
@@ -342,6 +349,7 @@ tr:hover {
 
   title: 'Roll vs Pitch',
   xaxis: {
+    bgcolor:(0,0,0),
     showgrid: false,
     dtick: 5,
     range: [-45, 45],
