@@ -342,19 +342,26 @@ tr:hover {
 
   title: 'Roll vs Pitch',
   xaxis: {
+    showgrid: true,
+    range: [-45, 45],
     title: 'Roll (Degrees)',
     titlefont: {
       family: 'Courier New, monospace',
       size: 18,
-      color: '#7f7f7f'
+      color: '#7f7f7f',
+      
     }
+
   },
   yaxis: {
+    showgrid: true,
+    range: [-45, 45],
     title: 'Pitch (Degrees',
     titlefont: {
       family: 'Courier New, monospace',
       size: 18,
-      color: '#7f7f7f'
+      color: '#7f7f7f',
+      range: [-45, 45]
     }
   }
 };
