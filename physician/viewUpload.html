@@ -328,21 +328,22 @@ tr:hover {
 
   images: [
     {
-      x: 5,
-      y: 5,
+      x: 0,
+      y: 0,
       sizex: .5,
       sizey: .5,
-      source: "https://upload.wikimedia.org/wikipedia/commons/a/a0/Circle_-_black_simple.svg",
-      xanchor: "center",
+      source: "personOutline.png",
+      xanchor: "left",
       xref: "paper",
-      yanchor: "center",
+      yanchor: "bottom",
       yref: "paper"
     }
   ],
 
   title: 'Roll vs Pitch',
   xaxis: {
-    showgrid: true,
+    showgrid: false,
+    dtick: 5,
     range: [-45, 45],
     title: 'Roll (Degrees)',
     titlefont: {
@@ -354,8 +355,9 @@ tr:hover {
 
   },
   yaxis: {
-    showgrid: true,
+    showgrid: false,
     range: [-45, 45],
+    dtick: 5,
     title: 'Pitch (Degrees',
     titlefont: {
       family: 'Courier New, monospace',
